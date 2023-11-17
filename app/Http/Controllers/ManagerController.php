@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\manager;
+use App\Models\Manager;
 use Illuminate\Http\Request;
 
 class ManagerController extends Controller
@@ -34,7 +34,7 @@ class ManagerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(manager $manager)
+    public function show(Manager $manager)
     {
         //
     }
@@ -42,7 +42,7 @@ class ManagerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(manager $manager)
+    public function edit(Manager $manager)
     {
         //
     }
@@ -50,7 +50,7 @@ class ManagerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, manager $manager)
+    public function update(Request $request, Manager $manager)
     {
         //
     }
@@ -58,7 +58,7 @@ class ManagerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(manager $manager)
+    public function destroy(Manager $manager)
     {
         //
     }

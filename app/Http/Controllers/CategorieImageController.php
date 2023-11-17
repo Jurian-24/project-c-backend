@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\categorie_image;
+use App\Models\CategorieImage;
 use Illuminate\Http\Request;
 
 class CategorieImageController extends Controller
@@ -34,7 +34,7 @@ class CategorieImageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(categorie_image $categorie_image)
+    public function show(CategorieImage $categorie_image)
     {
         //
     }
@@ -42,7 +42,7 @@ class CategorieImageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(categorie_image $categorie_image)
+    public function edit(CategorieImage $categorie_image)
     {
         //
     }
@@ -50,7 +50,7 @@ class CategorieImageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, categorie_image $categorie_image)
+    public function update(Request $request, CategorieImage $categorie_image)
     {
         //
     }
@@ -58,7 +58,7 @@ class CategorieImageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(categorie_image $categorie_image)
+    public function destroy(CategorieImage $categorie_image)
     {
         //
     }
