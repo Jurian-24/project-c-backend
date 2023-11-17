@@ -10,7 +10,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('attendences', function (Blueprint $table) {
+        Schema::create('attendances', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('employee_id');
             $table->integer('week_number');
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('attendences');
+        Schema::dropIfExists('attendances');
     }
 };
