@@ -1,3 +1,12 @@
 {
-    "ohHeyHelloThere": "Oh hey, hello there!"
+    "language": "language",
+    "dutch": "Dutch",
+    "english": "English",
+    "dutch_plural": "Dutch",
+    "english_plural": "English",
+    "flag": "Flag",
+    "icon": "Icon",
+    "username": "Username",
+    "password": "Password",
+    "forgot_password": "Forgot password?"
 }

@@ -1,3 +1,12 @@
 {
-    "ohHeyHelloThere": "Oh hoi, hallo daar!"
+    "language": "Taal",
+    "dutch": "Nederlands",
+    "english": "Engels",
+    "dutch_plural": "Nederlandse",
+    "english_plural": "Engelse",
+    "flag": "Vlag",
+    "icon": "Icoon",
+    "username": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "forgot_password": "Wachtwoord vergeten?"
 }

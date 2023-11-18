@@ -1,0 +1,224 @@
+// Colors
+$primary-color: #099F91;
+$primary-color-light: #E6F5F4;
+$primary-color-fade: linear-gradient(90deg, $primary-color-light -75%, $primary-color 70%);
+$secondary-color: #0000ff;
+$text-color: #000000;
+$text-color-light: #656565;
+$link-color: $text-color;
+$background-color: #ffffff;
+$background_color_darker: #f4f4f4;
+// Fonts
+$font-family: 'Roboto', sans-serif;
+$font-size: 16px;
+// Styling
+$border-radius: 8px;
+
+h1 {
+    font-size: 1.75rem;
+}
+
+body {
+    background-color: $background-color;
+    overflow: hidden;
+}
+
+nav {
+    display: flex;
+    justify-content: right;
+}
+
+input {
+    box-sizing: border-box;
+    width: inherit;
+    height: 30px;
+    border: $primary-color 1px solid;
+    border-radius: $border-radius + 15px;
+    padding: 22px 30px;
+    margin-bottom: 12px;
+    outline-width: 0px;
+    transition: width 0.2s ease-in-out;
+
+    :focus,
+    :hover {
+        transition: width 0.2s ease-in-out;
+        width: 115%
+    }
+}
+
+
+button {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: 30px;
+    border-radius: $border-radius + 15px;
+    padding: 23px 31px;
+    background-color: $primary-color;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: $background-color;
+    background-image: $primary-color-fade;
+    margin: 10px 10px;
+    cursor: pointer;
+}
+
+.button {
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: inherit;
+    height: 30px;
+    border-radius: $border-radius + 15px;
+    padding: 23px 31px;
+    background-color: $primary-color;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: $background-color;
+    background-image: $primary-color-fade;
+    margin: 10px 10px;
+    cursor: pointer;
+    transition: background .2s ease-in-out, color .2s ease-in-out;
+
+    :hover {
+        background-image: none;
+        background-color: $primary-color-light;
+        color: $text-color
+    }
+}
+
+.link {
+    font-family: $font-family;
+    font-size: $font-size;
+    color: $text-color-light;
+}
+
+#dropdown {
+    width: fit-content;
+
+    .dropdown_btn {
+        display: flex;
+        height: 45px;
+        padding: 0 20px;
+        background: $background-color;
+        justify-content: space-between;
+        align-items: center;
+        font-family: $font-family;
+        font-size: $font-size;
+        border-radius: $border-radius;
+        cursor: pointer;
+        border: $primary-color 1px solid;
+        text-transform: uppercase;
+
+        i {
+            transition: 0.2s ease-in-out;
+        }
+    }
+
+    .dropdown_options {
+        position: absolute; //position: relative;
+        padding: 0px;
+        margin-top: 10px;
+        border-radius: $border-radius;
+        background: $background-color;
+        cursor: pointer;
+        border: $primary-color 1px solid;
+        display: none;
+        opacity: 0;
+
+        .dropdown_option {
+            box-sizing: border-box;
+            display: flex;
+            height: 40px;
+            padding: 10px;
+            border-radius: $border-radius;
+            font-family: $font-family;
+            font-size: $font-size;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            background: $background-color;
+
+            a {
+                display: flex;
+                align-items: center;
+                text-decoration: none;
+                color: $text-color;
+            }
+        }
+    }
+
+}
+
+#dropdown.dropdown_active {
+    .dropdown_btn i {
+        animation: normal 0.2s ease-in-out;
+        animation-name: dropdownArrow;
+        transform: rotate(180deg);
+    }
+
+    .dropdown_options {
+        display: block;
+        animation: normal 0.2s ease-in-out;
+        animation-name: dropdownOptions;
+        opacity: 1;
+        transform: translateY(0px);
+
+        :hover {
+            background: $background_color_darker;
+        }
+    }
+}
+
+#login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    flex-direction: column;
+
+    .login_header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: $border-radius;
+        font-family: $font-family;
+        font-size: $font-size;
+    }
+}
+
+
+#login .login_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    background-color: $primary-color-light;
+    overflow: hidden;
+}
+
+#login .gg-user {
+    color: $primary-color
+}
+
+#login .login_form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+    width: 300px;
+    border-radius: $border-radius;
+    font-family: $font-family;
+    font-size: $font-size;
+}
