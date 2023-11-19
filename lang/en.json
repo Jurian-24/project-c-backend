@@ -8,5 +8,6 @@
     "icon": "Icon",
     "username": "Username",
     "password": "Password",
-    "forgot_password": "Forgot password?"
+    "forgot_password": "Forgot password?",
+    "Please enter a valid email": "Please enter a valid email"
 }

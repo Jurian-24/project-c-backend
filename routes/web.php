@@ -21,6 +21,10 @@ Route::get('/', function () {
     return view('login');
 });
 
+Route::get('/forget-password', function () {
+    return view('forget-password');
+});
+
 // Route::get('/language', 'LanguageController@show');
 // Route::post('/language/{lang}', 'LanguageController@update');
 

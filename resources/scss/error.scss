@@ -1,0 +1,16 @@
+@import 'style.scss';
+
+.error_input {
+    box-sizing: border-box;
+    width: inherit;
+    padding: 10px;
+    font-family: inherit;
+    font-size: inherit;
+    color: $error-color;
+    margin-left: 15px;
+    animation: shake 0.2s ease-in-out;
+}
+
+.email_label {
+    display: none;
+}

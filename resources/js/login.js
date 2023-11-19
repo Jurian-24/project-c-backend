@@ -1,8 +1,9 @@
+// import './bootstrap';
+import { checkInputEmail } from './check.js';
+
 const dropdownMenu = document.querySelector('#dropdown'),
     dropdownBtn = document.querySelector(".dropdown_btn"),
-    dropdownBtnIcon = document.querySelector(".dropdown_btn i"),
     dropdownBtnText = document.querySelector(".dropdown_btn span"),
-    dropdownOption = document.querySelector(".dropdown_options"),
     dropdownOptions = document.querySelectorAll(".dropdown_option");
 
 // dropdown menu toggle
@@ -19,3 +20,16 @@ dropdownOptions.forEach(option => {
         dropdownMenu.classList.toggle("dropdown_active");
     });
 })
+
+// forget password
+const forgetPassword = document.querySelector(".forget_password");
+const inputEmail = document.querySelector("#email");
+const inputEmailLabel = document.querySelector(".email_label");
+forgetPassword.addEventListener("click", () => {
+    if (! checkInputEmail(inputEmail.value)) {
+        inputEmailLabel.style.display = "block";
+    }
+    else {
+        location.href = "/forget-password";
+    }
+});

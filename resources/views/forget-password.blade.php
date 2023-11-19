@@ -41,22 +41,11 @@
         </header>
         <section>
             <article id="login">
-                <header class="login_header">
-                    <div class="login_icon">
-                        <i class="gg-user"></i>
-                    </div>
-                    <h1>Login</h1>
-                </header>
-                <Form class="login_form">
-                    <label for="email" class="error_input email_label">* {{__('Please enter a valid email')}}</label>
-                    <input type="text" name="email" id="email" placeholder="E-mail">
-                    <input type="password" name="password" id="password" placeholder="{{__('password')}}">
-                    <a href="#" class="button">Login</a>
-                    <a href="#" class="forget_password link">{{__('forgot_password')}}</a>
-                </Form>
             </article>
         </section>
 
     </body>
-    <script type="module" src="{{ mix('resources/js/login.js') }}"></script>
+    <script type="module" src="{{ mix('resources/js/app.js') }}">
+        let loginError = {{ __(' Please enter a valid email')}}
+    </script>
 </html>

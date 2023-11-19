@@ -8,6 +8,7 @@ $text-color-light: #656565;
 $link-color: $text-color;
 $background-color: #ffffff;
 $background_color_darker: #f4f4f4;
+$error-color: #f44336;
 // Fonts
 $font-family: 'Roboto', sans-serif;
 $font-size: 16px;
@@ -39,8 +40,8 @@ input {
     outline-width: 0px;
     transition: width 0.2s ease-in-out;
 
-    :focus,
-    :hover {
+    &:focus,
+    &:hover {
         transition: width 0.2s ease-in-out;
         width: 115%
     }
@@ -87,7 +88,7 @@ button {
     cursor: pointer;
     transition: background .2s ease-in-out, color .2s ease-in-out;
 
-    :hover {
+    &:hover {
         background-image: none;
         background-color: $primary-color-light;
         color: $text-color
@@ -172,7 +173,7 @@ button {
         transform: translateY(0px);
 
         :hover {
-            background: $background_color_darker;
+            background-color: $background_color_darker;
         }
     }
 }
@@ -193,32 +194,31 @@ button {
         font-family: $font-family;
         font-size: $font-size;
     }
-}
 
+    .login_icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 80px;
+        height: 80px;
+        border-radius: 100px;
+        background-color: $primary-color-light;
+        overflow: hidden;
+    }
 
-#login .login_icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    height: 80px;
-    border-radius: 100px;
-    background-color: $primary-color-light;
-    overflow: hidden;
-}
+    .gg-user {
+        color: $primary-color
+    }
 
-#login .gg-user {
-    color: $primary-color
-}
-
-#login .login_form {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-    width: 300px;
-    border-radius: $border-radius;
-    font-family: $font-family;
-    font-size: $font-size;
+    .login_form {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: column;
+        padding: 20px;
+        width: 300px;
+        border-radius: $border-radius;
+        font-family: $font-family;
+        font-size: $font-size;
+    }
 }

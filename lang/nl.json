@@ -8,5 +8,6 @@
     "icon": "Icoon",
     "username": "Gebruikersnaam",
     "password": "Wachtwoord",
-    "forgot_password": "Wachtwoord vergeten?"
+    "forgot_password": "Wachtwoord vergeten?",
+    "Please enter a valid email": "Vul een geldig e-mailadres in"
 }
