@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('product_images', function (Blueprint $table) {
+        Schema::create('discount_labels', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('product_id');
-            $table->integer('width');
-            $table->integer('height');
-            $table->string('url');
+            $table->string('code');
+            $table->string('default_description');
+            $table->integer('count')->nullable();
+            $table->decimal('price')->nullable();
+            $table->integer('percentage')->nullable();
+            $table->integer('precise_percentage')->nullable();
             $table->timestamps();
         });
     }
@@ -26,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('product_images');
+        Schema::dropIfExists('discount_labels');
     }
 };

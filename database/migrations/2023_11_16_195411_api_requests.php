@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('api_requests', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->uuid('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
             $table->string('api_key');
             $table->string('end_point');
             $table->enum('http_method', ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
