@@ -9,7 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+
     public function productImages() {
         return $this->hasMany(ProductImage::class);
+    }
+
+    public function discountLabel() {
+        return $this->hasMany(DiscountLabel::class);
     }
 }

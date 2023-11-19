@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->uuid('product_id');
             $table->integer('width');
             $table->integer('height');
             $table->string('url');
