@@ -11,6 +11,7 @@
     <p>Test voor de login</p>
     <p style="color: green">Je bent ingelogd</p>
 
+    <a href="{{ route('add-company') }}">Voeg een company toe</a>
     <button><a href="{{ route('logout') }}">Logout</a></button>
 </body>
 </html>

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompanyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,11 @@ Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user
 Route::middleware(['authUser'])->group(function () {
     Route::get('/home', function () {
         return view('home');
-    });
+    })->name('home');
+    Route::get('/add-company', function () {
+        return view('add-company');
+    })->name('add-company');
+    Route::post('adding-company', [CompanyController::class, 'create'])->name('company-adding');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
