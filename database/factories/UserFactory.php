@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,14 +21,14 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
-            'id' => Str::uuid()->toString(),
-            'first_name' => fake()->firstName(),
-            'last_name' => fake()->lastName(),
-            'middle_name' => fake()->firstName(),
-            'email' => fake()->unique()->safeEmail(),
-            'role' => 'employee',
-            'password' => bcrypt('password123'),
-            'remember_token' => Str::random(10),
+            'id'            => Str::uuid()->toString(),
+            'first_name'    => fake()->firstName(),
+            'last_name'     => fake()->lastName(),
+            'middle_name'   => fake()->firstName(),
+            'email'         => fake()->unique()->safeEmail(),
+            'role'          => 'employee',
+            'password'      => bcrypt('password123'),
+            'remember_token'=> Str::random(10),
         ];
     }
 
