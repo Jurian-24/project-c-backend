@@ -34,8 +34,7 @@ class CompanyController extends Controller
 
 
         Company::create([
-            'id' => Str::uuid()->toString(),
-            'manager_id' => Auth::user()->id,
+            'manager_id' => auth()->user()->id,
             'name' => $request->company_name,
             'adress' => $request->adress,
             'country' => $request->country,

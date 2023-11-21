@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('api_requests', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->uuid('user_id');
             $table->string('api_key');
             $table->string('end_point');
