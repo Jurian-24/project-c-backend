@@ -44,7 +44,6 @@ class AppieProductSeeder extends Seeder
             foreach($products['products'] as $product) {
                 $this->command->info((string) $product['title']);
                 $createdProduct = Product::create([
-                    'id'                        => Str::uuid()->ToString(),
                     'ah_id'                     => $product['webshopId']                        ?? null,
                     'title'                     => $product['title']                            ?? null,
                     'sales_unit_size'           => $product['salesUnitSize']                    ?? null,
@@ -73,7 +72,6 @@ class AppieProductSeeder extends Seeder
 
                 foreach($product['images'] as $image) {
                     ProductImage::create([
-                        'id' => Str::uuid()->ToString(),
                         'product_id' => $createdProduct->id,
                         'width' => $image['width'],
                         'height' => $image['height'],
@@ -83,7 +81,6 @@ class AppieProductSeeder extends Seeder
 
                 foreach($product['discountLabels'] as $discountLabel) {
                     DiscountLabel::create([
-                        'id' => Str::uuid()->ToString(),
                         'product_id' => $createdProduct->id,
                         'code' => $discountLabel['code'],
                         'default_description' => $discountLabel['defaultDescription'],
