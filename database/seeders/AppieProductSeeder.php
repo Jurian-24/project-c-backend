@@ -22,6 +22,19 @@ class AppieProductSeeder extends Seeder
         $json = [];
         // for loop maken en een sleep toevoegen van 10 seconden of iets zodat we niet te veel requests aanmaken.
 
+
+        $response = Http::withHeaders([
+            'Host' => env('APPIE_API_HOST'),
+            'x-dynatrace' => env('APPIE_X_DYNATRACE'),
+            'x-application' => env('APPIE_X_APPLICATION'),
+            'user-agent' => env('APPIE_USER_AGENT'),
+            'content-type' => env('APPIE_CONTENT_TYPE'),
+        ])->post("https://api.ah.nl/mobile-auth/v1/auth/token/anonymous", [
+            'clientId' => 'appie'
+        ]);
+
+        $access_token = $response['access_token'];
+
         for($i=0; $i < 9; $i++) {
             // create the request
             $response = Http::withHeaders([
@@ -30,7 +43,7 @@ class AppieProductSeeder extends Seeder
                 'x-application' => env('APPIE_X_APPLICATION'),
                 'user-agent' => env('APPIE_USER_AGENT'),
                 'content-type' => env('APPIE_CONTENT_TYPE'),
-                'Authorization' => "Bearer " . env('APPIE_API_TOKEN'),
+                'Authorization' => "Bearer " . $access_token,
             ])
             ->get("https://" . env('APPIE_API_HOST') . "/mobile-services/product/search/v2?page=". $i + 1 ."&size=300&shopType=AH");
 
