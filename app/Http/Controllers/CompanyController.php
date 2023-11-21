@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Company;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CompanyController extends Controller
 {
@@ -18,9 +21,30 @@ class CompanyController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'company_name' => 'required',
+            'adress' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'zip' => 'required',
+            'building' => 'required'
+        ]);
+
+
+        Company::create([
+            'id' => Str::uuid()->toString(),
+            'manager_id' => Auth::user()->id,
+            'name' => $request->company_name,
+            'adress' => $request->adress,
+            'country' => $request->country,
+            'city' => $request->city,
+            'zip_code' => $request->zip,
+            'building' => $request->building
+        ]);
+
+        return redirect('add-company')->with('success', 'Company added successfully');
     }
 
     /**

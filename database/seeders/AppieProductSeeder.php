@@ -22,7 +22,7 @@ class AppieProductSeeder extends Seeder
         $json = [];
         // for loop maken en een sleep toevoegen van 10 seconden of iets zodat we niet te veel requests aanmaken.
 
-        for($i=0; $i < 5; $i++) {
+        for($i=0; $i < 9; $i++) {
             // create the request
             $response = Http::withHeaders([
                 'Host' => env('APPIE_API_HOST'),
@@ -32,7 +32,7 @@ class AppieProductSeeder extends Seeder
                 'content-type' => env('APPIE_CONTENT_TYPE'),
                 'Authorization' => "Bearer " . env('APPIE_API_TOKEN'),
             ])
-            ->get("https://" . env('APPIE_API_HOST') . "/mobile-services/product/search/v2?page=". $i + 1 ."&size=500");
+            ->get("https://" . env('APPIE_API_HOST') . "/mobile-services/product/search/v2?page=". $i + 1 ."&size=300&shopType=AH");
 
             array_push($json, $response->json());
 
