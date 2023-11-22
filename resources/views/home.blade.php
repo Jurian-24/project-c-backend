@@ -12,6 +12,7 @@
     <p style="color: green">Je bent ingelogd</p>
 
     <a href="{{ route('add-company') }}">Voeg een company toe</a>
+    <a href="{{ route('company-overview') }}">Company overview</a>
     <button><a href="{{ route('logout') }}">Logout</a></button>
 </body>
 </html>

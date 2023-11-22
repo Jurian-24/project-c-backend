@@ -15,7 +15,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        $companies = Company::all();
+
+        return view('company-overview', [
+            'companies' => $companies
+        ]);
     }
 
     /**
@@ -83,6 +87,8 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        $company->delete();
+
+        return redirect('company-overview')->with('success', 'Company deleted successfully');
     }
 }
