@@ -24,6 +24,9 @@ Route::get('/', function () {
 });
 
 Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user');
+Route::get('company-verification/{id}', [CompanyController::class, 'verify'])->name('company-verification');
+Route::post('/update-company/{company}', [CompanyController::class, 'update'])->name('update-company');
+
 Route::middleware(['authUser'])->group(function () {
     Route::get('/home', function () {
         return view('home');

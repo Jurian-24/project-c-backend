@@ -9,33 +9,39 @@
 <body>
     <h1>Aloha {{ auth()->user()->first_name }}</h1>
     <p>Voeg een company toe</p>
+    @if (session('success'))
+        <p style="background-color: lime; color: white;">{{ session('success') }}</p>
+    @endif
+
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <form action="{{ route('company-adding') }}" method="POST">
         @csrf
         <label for="company-name">
             Name
-            <input type="text" name="company_name" id="company-name">
+            <input type="text" name="company_name" id="company-name" required>
         </label>
-        <label for="adress">
-            Adress
-            <input type="text" name="adress" id="adress">
+        <label for="manager-frist-name">
+            Manager's First Name
+            <input type="text" name="manager_first_name" id="manager_first_name" required>
         </label>
-        <label for="country">
-            Country
-            <input type="text" name="country" id="country">
+        <label for="manager-email">
+            Email of the manager
+            <input type="text" name="manager_email" id="manager_email" required>
         </label>
-        <label for="city">
-            City
-            <input type="text" name="city" id="city">
+        <label for="manager-password">
+            Temporary password of the manager
+            <input type="text" name="manager_password" id="manager_password" required>
         </label>
-        <label for="zip">
-            Zip code
-            <input type="text" name="zip" id="zip">
-        </label>
-        <label for="Building">
-            Building
-            <input type="text" name="building" id="building">
-        </label>
+
         <button type="submit">Add company</button>
     </form>
 
