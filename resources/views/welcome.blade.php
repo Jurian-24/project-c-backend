@@ -16,6 +16,16 @@
         </style>
     </head>
     <body class="antialiased">
+        @if (session('error'))
+            <div class="bg-red-50 p-6 rounded-lg">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="bg-green-50 p-6 rounded-lg">
+                {{ session('success') }}
+            </div>
+        @endif
         <form action="{{ route('authenticate-user') }}" method="POST">
             @csrf
             <label for="email">Email</label>
