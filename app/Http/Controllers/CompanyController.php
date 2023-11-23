@@ -19,7 +19,7 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
 
-        return view('company-overview', [
+        return view('super-admin.company-overview', [
             'companies' => $companies
         ]);
     }
@@ -39,7 +39,8 @@ class CompanyController extends Controller
         $manager = User::create([
             'first_name' => $request->manager_first_name,
             'email' => $request->manager_email,
-            'password' => $request->manager_password
+            'password' => $request->manager_password,
+            'role' => 'company_admin'
         ]);
 
         $company = Company::create([

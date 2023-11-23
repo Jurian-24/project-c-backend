@@ -23,21 +23,34 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user');
 Route::get('company-verification/{id}', [CompanyController::class, 'verify'])->name('company-verification');
 Route::post('/update-company/{company}', [CompanyController::class, 'update'])->name('update-company');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware(['authUser'])->group(function () {
+Route::middleware(['companyAdmin'])->group(function () {
+    Route::get('/company-admin-dashboard', function () {
+        return view('company-admin.dashboard');
+    })->name('company-admin-dashboard');
+});
+
+Route::middleware(['employeeCheck'])->group(function () {
+    Route::get('/employee-home', function () {
+        return view('employee.dashboard');
+    })->name('employee-home');
+});
+
+Route::middleware(['superAdmin'])->group(function () {
     Route::get('/home', function () {
-        return view('home');
+        return view('super-admin.dashboard');
     })->name('home');
     Route::get('/add-company', function () {
-        return view('add-company');
+        return view('super-admin.add-company');
     })->name('add-company');
     Route::get('company-overview', [CompanyController::class, 'index'])->name('company-overview');
     Route::delete('delete-company/{company}', [CompanyController::class, 'destroy'])->name('delete-company');
     Route::post('adding-company', [CompanyController::class, 'create'])->name('company-adding');
-    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
 // Route::get('/home', function () {
