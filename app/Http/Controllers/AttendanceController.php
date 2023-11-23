@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class AttendanceController extends Controller
 {
@@ -12,7 +13,16 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $next_week = Carbon::now()->addWeek()->week;
+        $current_year = Carbon::now()->year;
+
+        $attendances = Attendance::where('week_number', $next_week)
+            ->where('year', $current_year)
+            ->where('employee_id', auth()->user()->employee->id)
+            ->get();
+        return view('employee.attendance-schedule', [
+            'attendances' => $attendances,
+        ]);
     }
 
     /**
@@ -50,9 +60,18 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Attendance $attendence)
+    public function update(Request $request, $weekNumber, $weekDay)
     {
-        //
+        $attendance = Attendance::where('employee_id', auth()->user()->employee->id)
+            ->where('week_number', $weekNumber)
+            ->where('week_day', $weekDay)
+            ->first();
+
+        $attendance->update([
+            'onSite' => !$attendance->onSite,
+        ]);
+
+        return;
     }
 
     /**
