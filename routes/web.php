@@ -1,8 +1,11 @@
 <?php
 declare(strict_types=1);
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\AttendanceController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +42,9 @@ Route::middleware(['employeeCheck'])->group(function () {
     Route::get('/employee-home', function () {
         return view('employee.dashboard');
     })->name('employee-home');
+    Route::post('/update-attendance/{weekNumber}', [AttendanceController::class, 'update'])->name('update-attendance');
+    Route::get('/copy-attendance', [AttendanceController::class, 'copy'])->name('copy-attendance');
+    Route::get('/attendance-schedule', [AttendanceController::class, 'index'])->name('attendance-schedule');
 });
 
 Route::middleware(['superAdmin'])->group(function () {
