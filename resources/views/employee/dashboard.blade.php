@@ -8,5 +8,8 @@
 </head>
 <body>
     <h1>EMPLOYEE</h1>
+
+    <h2>Attendance Schedule</h2>
+    <a href="{{ route('attendance-schedule') }}">My schedule</a>
 </body>
 </html>

@@ -43,6 +43,7 @@ Route::middleware(['employeeCheck'])->group(function () {
         return view('employee.dashboard');
     })->name('employee-home');
     Route::post('/update-attendance/{weekNumber}', [AttendanceController::class, 'update'])->name('update-attendance');
+    Route::get('/copy-attendance', [AttendanceController::class, 'copy'])->name('copy-attendance');
     Route::get('/attendance-schedule', [AttendanceController::class, 'index'])->name('attendance-schedule');
 });
 

@@ -74,6 +74,29 @@ class AttendanceController extends Controller
         return;
     }
 
+    public function copy() {
+        $next_week = Carbon::now()->addWeek()->week;
+        $second_week = Carbon::now()->addWeeks(2)->week;
+        $current_year = Carbon::now()->year;
+
+        $current_attendances = Attendance::where('week_number', $next_week)
+            ->where('year', $current_year)
+            ->where('employee_id', auth()->user()->employee->id)
+            ->get();
+
+        foreach ($current_attendances as $attendance) {
+            Attendance::create([
+                'employee_id' => $attendance->employee_id,
+                'week_number' => $second_week,
+                'week_day' => $attendance->week_day,
+                'year' => $current_year,
+                'onSite' => $attendance->onSite,
+            ]);
+        }
+
+        return redirect()->route('attendance-schedule')->with('success', 'Your attendance ahs been copied!');
+    }
+
     /**
      * Remove the specified resource from storage.
      */
