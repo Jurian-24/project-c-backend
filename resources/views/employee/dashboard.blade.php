@@ -10,6 +10,10 @@
     <h1>EMPLOYEE</h1>
 
     <h2>Attendance Schedule</h2>
+    @if(session()->has('success'))
+        <p style="color: green;">{{ session()->get('success') }}</p>
+    @endif
+
     <a href="{{ route('attendance-schedule') }}">My schedule</a>
 </body>
 </html>

@@ -28,9 +28,19 @@ class AttendanceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create($employee_id)
     {
-        //
+        for ($i=0; $i < 7; $i++) {
+            Attendance::create([
+                'employee_id' => $employee_id,
+                'week_number' => Carbon::now()->addWeek()->week,
+                'week_day' => $i + 1,
+                'year' => Carbon::now()->year,
+                'onSite' => false
+            ]);
+        }
+
+        return;
     }
 
     /**
