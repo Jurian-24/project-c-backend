@@ -16,7 +16,7 @@
             @endforeach
         </ul>
     @endif
-    <form action="{{ route('update-employee', ['id' => $user->id]) }}" method="POST">
+    <form action="{{ route('update-employee', ['token' => $user->verification_token, 'id' => $user->id]) }}" method="POST">
         @csrf
         <label for="first-name">
             First name

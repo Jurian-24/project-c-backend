@@ -24,7 +24,9 @@ class User extends Authenticatable
         'middle_name',
         'email',
         'password',
-        'role'
+        'role',
+        'verified',
+        'verification_token',
     ];
 
     /**
