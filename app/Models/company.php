@@ -17,7 +17,9 @@ class Company extends Model
         'country',
         'city',
         'zip_code',
-        'building'
+        'building',
+        'verified',
+        'verification_token',
     ];
 
     public function employee() {

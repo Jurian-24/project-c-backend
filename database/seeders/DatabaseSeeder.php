@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             'city' => 'Amsterdam',
             'zip_code' => '1011',
             'country' => 'Nederland',
+            'verified' => true,
+            'verification_token' => null
         ]);
 
         $employees = [];
