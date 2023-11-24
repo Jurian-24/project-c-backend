@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Company;
 use App\Models\Manager;
 use App\Models\Employee;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Mail\CompleteCompanyMail;
 use Illuminate\Support\Facades\Mail;
@@ -29,7 +30,7 @@ class CompanyController extends Controller
      */
     public function create(Request $request)
     {
-        $validate = $request->validate([
+        $request->validate([
             'company_name' => 'required',
             'manager_first_name' => 'required',
             'manager_password' => 'required',
@@ -46,6 +47,7 @@ class CompanyController extends Controller
         $company = Company::create([
             'manager_id' => $manager->id,
             'name' => $request->company_name,
+            'verification_token' => Str::Random(32),
         ]);
 
         Employee::create([
@@ -90,8 +92,24 @@ class CompanyController extends Controller
         //
     }
 
-    public function verify($id) {
+    public function verify($token, $id) {
         $company = Company::with('employee.user')->find($id);
+
+        if($company === null) {
+            return response()->json([
+                'message' => 'Company not found'
+            ], 404);
+        }
+
+        if($company->verified) {
+            return response()->json([
+                'message' => 'Company already verified'
+            ], 400);
+        }
+
+        if ($company->verification_token !== $token) {
+            return redirect('/')->with('error', 'Invalid token');
+        }
 
         return view('company-completion', [
             'company' => $company
@@ -117,6 +135,8 @@ class CompanyController extends Controller
             'country' => $request->company_country,
             'city' => $request->company_city,
             'zip_code' => $request->company_zip,
+            'verified' => true,
+            'verification_token' => null,
         ]);
 
         return redirect('/')->with('success', 'You have completed the validation process, you can now login with your temporary password given by the Buurtboer Admin');
