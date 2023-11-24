@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\AttendanceController;
-
+use App\Http\Controllers\EmployeeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +31,17 @@ Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user
 Route::get('company-verification/{id}', [CompanyController::class, 'verify'])->name('company-verification');
 Route::post('/update-company/{company}', [CompanyController::class, 'update'])->name('update-company');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/complete-registration/{id}', [EmployeeController::class, 'register'])->name('registration-completion');
+Route::post('/update-employee/{id}', [EmployeeController::class, 'update'])->name('update-employee');
+
+
 
 Route::middleware(['companyAdmin'])->group(function () {
     Route::get('/company-admin-dashboard', function () {
         return view('company-admin.dashboard');
     })->name('company-admin-dashboard');
+    Route::get('/add-employee', [EmployeeController::class, 'add'])->name('add-employee');
+    Route::post('/add-employee', [EmployeeController::class, 'create'])->name('add-employee');
 });
 
 Route::middleware(['employeeCheck'])->group(function () {
