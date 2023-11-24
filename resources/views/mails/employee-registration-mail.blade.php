@@ -13,6 +13,6 @@
 
     <p>Please complete your registration by clicking the link below:</p>
 
-    <a href="{{ route('registration-completion', ['id' => $user->id]) }}">Complete Registration</a>
+    <a href="{{ route('registration-completion', ['token' => $user->verification_token]) }}">Complete Registration</a>
 </body>
 </html>
