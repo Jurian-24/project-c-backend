@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -19,7 +21,7 @@ class Company extends Model
         'zip_code',
         'building',
         'verified',
-        'verification_token',
+        'verification_token'
     ];
 
     public function employee() {

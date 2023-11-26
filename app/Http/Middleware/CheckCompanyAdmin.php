@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -15,15 +17,14 @@ class CheckCompanyAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check()) {
-            // return 404 page
+        if(!auth()->check()) {
             return abort(404);
         }
-        if(auth()->user()->role !== 'company_admin' && auth()->user()->role !== 'super_admin') {
 
-            // return 404 page
+        if(auth()->user()->role !== 'company_admin' && auth()->user()->role !== 'super_admin') {
             return abort(404);
         }
+
         return $next($request);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
@@ -13,7 +15,7 @@ class AttendanceController extends Controller
      */
     public function index($employeeId = null)
     {
-        if (!$employeeId) {
+        if(!$employeeId) {
             $employeeId = auth()->user()->employee->id;
         }
 
@@ -48,13 +50,13 @@ class AttendanceController extends Controller
      */
     public function create($employee_id)
     {
-        for ($i=0; $i < 7; $i++) {
+        for($i=0; $i < 7; $i++) {
             Attendance::create([
                 'employee_id' => $employee_id,
                 'week_number' => Carbon::now()->addWeek()->week,
-                'week_day' => $i + 1,
-                'year' => Carbon::now()->year,
-                'onSite' => false
+                'week_day'    => $i + 1,
+                'year'        => Carbon::now()->year,
+                'onSite'      => false
             ]);
         }
 
@@ -88,11 +90,12 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $weekNumber, $weekDay)
+    public function update(Request $request, $weekNumber, $weekDay): response
     {
         if($request->employeeId) {
             $employeeId = $request->employeeId;
-        } else {
+        }
+        else {
             $employeeId = auth()->user()->employee->id;
         }
 
@@ -110,7 +113,8 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    public function copy() {
+    public function copy()
+    {
         $next_week = Carbon::now()->addWeek()->week;
         $second_week = Carbon::now()->addWeeks(2)->week;
         $current_year = Carbon::now()->year;
@@ -120,7 +124,7 @@ class AttendanceController extends Controller
             ->where('employee_id', auth()->user()->employee->id)
             ->get();
 
-        foreach ($current_attendances as $attendance) {
+        foreach($current_attendances as $attendance) {
             Attendance::create([
                 'employee_id' => $attendance->employee_id,
                 'week_number' => $second_week,

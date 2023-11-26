@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\User;
@@ -18,7 +20,9 @@ class EmployeeRegistration extends Mailable
      * Create a new message instance.
      */
     public function __construct(public User $user)
-    {}
+    {
+        //
+    }
 
     /**
      * Get the message envelope.
@@ -26,7 +30,7 @@ class EmployeeRegistration extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Buurtboer Registration',
+            subject: 'Buurtboer Registration'
         );
     }
 
@@ -36,7 +40,7 @@ class EmployeeRegistration extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.employee-registration-mail',
+            view: 'mails.employee-registration-mail'
         );
     }
 

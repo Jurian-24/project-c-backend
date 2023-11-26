@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -37,27 +39,28 @@ class EmployeeController extends Controller
     {
         if($request->company_manager_id == null) {
             $company_admin = Employee::where('user_id', auth()->user()->id)->with('company')->first();
-        } else {
+        }
+        else {
             $company_admin = Employee::where('user_id', $request->company_manager_id)->with('company')->first();
         }
 
         $request->validate([
-            'email' => 'required|unique:users',
+            'email'    => 'required|unique:users',
             'password' => 'required'
         ]);
 
 
         $user = User::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => 'employee',
+            'email'              => $request->email,
+            'password'           => bcrypt($request->password),
+            'role'               => 'employee',
             'verification_token' => Str::Random(32),
         ]);
 
         $employee = Employee::create([
-            'user_id' => $user->id,
+            'user_id'    => $user->id,
             'company_id' => $company_admin->company->id,
-            'joined_at' => now()->timestamp,
+            'joined_at'  => now()->timestamp,
         ]);
 
         (new AttendanceController())->create($employee->id);
@@ -119,10 +122,10 @@ class EmployeeController extends Controller
     public function update(Request $request, $token, $userId = null)
     {
         $request->validate([
-            'first_name' => 'required',
+            'first_name'  => 'required',
             'middle_name' => 'required',
-            'last_name' => 'required',
-            'password' => 'required'
+            'last_name'   => 'required',
+            'password'    => 'required'
         ]);
 
         if($userId === null) {
@@ -134,7 +137,8 @@ class EmployeeController extends Controller
                 ->where('email', $request->email)
                 ->first();
 
-        } else {
+        }
+        else {
             $user = User::find($userId)->where('verification_token', $token)->first();
         }
 
@@ -157,12 +161,12 @@ class EmployeeController extends Controller
         }
 
         $user->update([
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'password' => bcrypt($request->password),
-            'verified' => true,
-            'verification_token' => null,
+            'first_name'         => $request->first_name,
+            'middle_name'        => $request->middle_name,
+            'last_name'          => $request->last_name,
+            'password'           => bcrypt($request->password),
+            'verified'           => true,
+            'verification_token' => null
         ]);
 
         //web call

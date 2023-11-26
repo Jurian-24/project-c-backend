@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 declare(strict_types=1);
 namespace App\Http\Controllers;
 
@@ -21,6 +24,7 @@ class AuthController extends Controller
             if(auth()->user()->role === 'super_admin') {
                 return redirect('home')->withCookie(cookie('access_token', $token, 60));
             }
+
             if(auth()->user()->role === 'company_admin') {
                 return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
             }

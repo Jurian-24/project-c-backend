@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -37,35 +39,35 @@ class CompanyController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'company_name' => 'required',
+            'company_name'       => 'required',
             'manager_first_name' => 'required',
-            'manager_password' => 'required',
-            'manager_email' => 'required|email|unique:users,email',
+            'manager_password'   => 'required',
+            'manager_email'      => 'required|email|unique:users,email'
         ]);
 
         $manager = User::create([
             'first_name' => $request->manager_first_name,
-            'email' => $request->manager_email,
-            'password' => $request->manager_password,
-            'role' => 'company_admin'
+            'email'      => $request->manager_email,
+            'password'   => $request->manager_password,
+            'role'       => 'company_admin'
         ]);
 
         $company = Company::create([
-            'manager_id' => $manager->id,
-            'name' => $request->company_name,
-            'verification_token' => Str::Random(32),
+            'manager_id'         => $manager->id,
+            'name'               => $request->company_name,
+            'verification_token' => Str::Random(32)
         ]);
 
         Employee::create([
-            'user_id' => $manager->id,
+            'user_id'    => $manager->id,
             'company_id' => $company->id,
-            'joined_at' => now()->timestamp,
+            'joined_at'  => now()->timestamp
         ]);
 
         Manager::create([
-            'user_id' => $manager->id,
+            'user_id'    => $manager->id,
             'company_id' => $company->id,
-            'start_date' => now()->timestamp,
+            'start_date' => now()->timestamp
         ]);
 
         Mail::to($manager)
@@ -154,21 +156,21 @@ class CompanyController extends Controller
 
         // api call
         $request->validate([
-            'name' => 'required',
-            'adress' => 'required',
-            'country' => 'required',
-            'city' => 'required',
-            'zip_code' => 'required',
+            'name'     => 'required',
+            'adress'   => 'required',
+            'country'  => 'required',
+            'city'     => 'required',
+            'zip_code' => 'required'
         ]);
 
         $company->update([
-            'name' => $request->name,
-            'adress' => $request->adress,
-            'country' => $request->country,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
-            'verified' => true,
-            'verification_token' => null,
+            'name'               => $request->name,
+            'adress'             => $request->adress,
+            'country'            => $request->country,
+            'city'               => $request->city,
+            'zip_code'           => $request->zip_code,
+            'verified'           => true,
+            'verification_token' => null
         ]);
 
         return response()->json([
@@ -193,12 +195,12 @@ class CompanyController extends Controller
 
             // api response
             return response()->json([
-                'message' => 'Company deleted successfully',
+                'message' => 'Company deleted successfully'
             ], 200);
         }
 
         return response()->json([
-            'message' => 'Something went wrong',
+            'message' => 'Something went wrong'
         ], 400);
     }
 }

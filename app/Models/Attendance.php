@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +16,7 @@ class Attendance extends Model
         'week_number',
         'week_day',
         'year',
-        'onSite',
+        'onSite'
     ];
 
     public function employee()

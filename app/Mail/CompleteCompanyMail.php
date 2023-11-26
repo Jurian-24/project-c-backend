@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail;
 
 use App\Models\User;
@@ -19,6 +21,7 @@ class CompleteCompanyMail extends Mailable
      */
     public function __construct(public User $user, public Company $company)
     {
+        //
     }
 
     /**
@@ -28,7 +31,7 @@ class CompleteCompanyMail extends Mailable
     {
         return new Envelope(
             from: env('MAIL_FROM_ADDRESS'),
-            subject: 'Complete Company Mail',
+            subject: 'Complete Company Mail'
         );
     }
 
@@ -38,7 +41,7 @@ class CompleteCompanyMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'mails.complete-company-mail',
+            view: 'mails.complete-company-mail'
         );
     }
 

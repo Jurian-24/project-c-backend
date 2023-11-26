@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
@@ -15,8 +17,7 @@ class CheckEmployee
      */
     public function handle(Request $request, Closure $next)
     {
-        if (!auth()->check()) {
-            // return 404 page
+        if(!auth()->check()) {
             return abort(404);
         }
 
