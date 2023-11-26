@@ -28,11 +28,11 @@ Route::get('/', function () {
 
 
 Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user');
-Route::get('company-verification/{id}', [CompanyController::class, 'verify'])->name('company-verification');
+Route::get('company-verification/{token}/{id}', [CompanyController::class, 'verify'])->name('company-verification');
 Route::post('/update-company/{company}', [CompanyController::class, 'update'])->name('update-company');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-Route::get('/complete-registration/{id}', [EmployeeController::class, 'register'])->name('registration-completion');
-Route::post('/update-employee/{id}', [EmployeeController::class, 'update'])->name('update-employee');
+Route::get('/complete-registration/{token}', [EmployeeController::class, 'register'])->name('registration-completion');
+Route::post('/update-employee/{token}/{id}', [EmployeeController::class, 'update'])->name('update-employee');
 
 
 
@@ -48,7 +48,7 @@ Route::middleware(['employeeCheck'])->group(function () {
     Route::get('/employee-home', function () {
         return view('employee.dashboard');
     })->name('employee-home');
-    Route::post('/update-attendance/{weekNumber}', [AttendanceController::class, 'update'])->name('update-attendance');
+    Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update'])->name('update-attendance');
     Route::get('/copy-attendance', [AttendanceController::class, 'copy'])->name('copy-attendance');
     Route::get('/attendance-schedule', [AttendanceController::class, 'index'])->name('attendance-schedule');
 });
@@ -61,7 +61,7 @@ Route::middleware(['superAdmin'])->group(function () {
         return view('super-admin.add-company');
     })->name('add-company');
     Route::get('company-overview', [CompanyController::class, 'index'])->name('company-overview');
-    Route::delete('delete-company/{company}', [CompanyController::class, 'destroy'])->name('delete-company');
+    Route::delete('delete-company/{id}', [CompanyController::class, 'destroy'])->name('delete-company');
     Route::post('adding-company', [CompanyController::class, 'create'])->name('company-adding');
 });
 

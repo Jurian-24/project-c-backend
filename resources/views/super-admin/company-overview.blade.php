@@ -21,7 +21,7 @@
         <h3>{{ $company->name }}</h3>
         <h3>{{ $company->employee->count() }}</h3>
 
-        <form action="{{ route('delete-company', $company) }}" method="POST">
+        <form action="{{ route('delete-company', $company->id) }}" method="POST">
         @csrf
         @method('DELETE')
         <button type="submit" style="background-color: red; color: white">Delete</button>

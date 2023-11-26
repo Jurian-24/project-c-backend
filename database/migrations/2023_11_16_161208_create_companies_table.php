@@ -19,6 +19,8 @@ return new class extends Migration {
             $table->string('city')->nullable();
             $table->string('zip_code')->nullable();
             $table->string('building')->nullable();
+            $table->boolean('verified')->default(false);
+            $table->string('verification_token')->nullable();
             $table->timestamps();
         });
     }

@@ -11,18 +11,36 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($employeeId = null)
     {
+        if (!$employeeId) {
+            $employeeId = auth()->user()->employee->id;
+        }
+
         $next_week = Carbon::now()->addWeek()->week;
+
+        // week starts at sunday, prevents that it returns the wrong week for the upcoming week
+        // Example: week 47 sunday == week 49 accourding to the next week. This prevents that.
+        if(Carbon::now()->formatLocalized('%A') == "Sunday") {
+            $next_week--;
+        }
+
         $current_year = Carbon::now()->year;
 
         $attendances = Attendance::where('week_number', $next_week)
             ->where('year', $current_year)
-            ->where('employee_id', auth()->user()->employee->id)
+            ->where('employee_id', $employeeId)
             ->get();
-        return view('employee.attendance-schedule', [
+
+        //api call
+        return response()->json([
             'attendances' => $attendances,
         ]);
+
+        // web call
+        // return view('employee.attendance-schedule', [
+        //     'attendances' => $attendances,
+        // ]);
     }
 
     /**
@@ -72,7 +90,13 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, $weekNumber, $weekDay)
     {
-        $attendance = Attendance::where('employee_id', auth()->user()->employee->id)
+        if($request->employeeId) {
+            $employeeId = $request->employeeId;
+        } else {
+            $employeeId = auth()->user()->employee->id;
+        }
+
+        $attendance = Attendance::where('employee_id', $employeeId)
             ->where('week_number', $weekNumber)
             ->where('week_day', $weekDay)
             ->first();
@@ -81,7 +105,9 @@ class AttendanceController extends Controller
             'onSite' => !$attendance->onSite,
         ]);
 
-        return;
+        return response()->json([
+            'success' => 'Attendance updated😎'
+        ], 200);
     }
 
     public function copy() {
