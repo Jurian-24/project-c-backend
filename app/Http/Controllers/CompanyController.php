@@ -20,9 +20,15 @@ class CompanyController extends Controller
     {
         $companies = Company::all();
 
-        return view('super-admin.company-overview', [
+        //api call
+        return response()->json([
             'companies' => $companies
         ]);
+
+        // turn on when you are testing in laravel
+        // return view('super-admin.company-overview', [
+        //     'companies' => $companies
+        // ]);
     }
 
     /**
@@ -79,9 +85,12 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show($id)
     {
-        //
+        $company = Company::findOrFail($id);
+
+        // return json response
+        return $company->toJson(JSON_PRETTY_PRINT);
     }
 
     /**
@@ -92,7 +101,8 @@ class CompanyController extends Controller
         //
     }
 
-    public function verify($token, $id) {
+    public function verify($token, $id)
+    {
         $company = Company::with('employee.user')->find($id);
 
         if($company === null) {
@@ -119,25 +129,51 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
+        $company = Company::findOrFail($id);
+
+        // web call
+        // $request->validate([
+        //     'company_name' => 'required',
+        //     'company_adress' => 'required',
+        //     'company_country' => 'required',
+        //     'company_city' => 'required',
+        //     'company_zip' => 'required'
+        // ]);
+
+        // $company->update([
+        //     'name' => $request->company_name,
+        //     'adress' => $request->company_adress,
+        //     'country' => $request->company_country,
+        //     'city' => $request->company_city,
+        //     'zip_code' => $request->company_zip,
+        //     'verified' => true,
+        //     'verification_token' => null,
+        // ]);
+
+        // api call
         $request->validate([
-            'company_name' => 'required',
-            'company_adress' => 'required',
-            'company_country' => 'required',
-            'company_city' => 'required',
-            'company_zip' => 'required'
+            'name' => 'required',
+            'adress' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'zip_code' => 'required',
         ]);
 
         $company->update([
-            'name' => $request->company_name,
-            'adress' => $request->company_adress,
-            'country' => $request->company_country,
-            'city' => $request->company_city,
-            'zip_code' => $request->company_zip,
+            'name' => $request->name,
+            'adress' => $request->adress,
+            'country' => $request->country,
+            'city' => $request->city,
+            'zip_code' => $request->zip_code,
             'verified' => true,
             'verification_token' => null,
         ]);
+
+        return response()->json([
+            'message' => 'Company updated successfully',
+        ], 200);
 
         return redirect('/')->with('success', 'You have completed the validation process, you can now login with your temporary password given by the Buurtboer Admin');
     }
@@ -145,10 +181,24 @@ class CompanyController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
+        $company = Company::findOrFail($id);
+
         $company->delete();
 
-        return redirect('company-overview')->with('success', 'Company deleted successfully');
+        if(!$company->exists) {
+            // web response
+            // return redirect('company-overview')->with('success', 'Company deleted successfully');
+
+            // api response
+            return response()->json([
+                'message' => 'Company deleted successfully',
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Something went wrong',
+        ], 400);
     }
 }
