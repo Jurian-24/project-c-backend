@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,5 +37,8 @@ Route::post('/create-employee', [EmployeeController::class, 'create']);
 // Route::post('/update-employee/{id}', [EmployeeController::class, 'update']);
 Route::post('/complete-registration/{token}', [EmployeeController::class, 'update']);
 Route::post('/delete-employee/{employeeId}', [EmployeeController::class, 'destroy']);
+
+Route::get('/get-attendance/{employeeId}', [AttendanceController::class, 'index']);
+Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update']);
 
 // Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update'])->name('update-attendance');
