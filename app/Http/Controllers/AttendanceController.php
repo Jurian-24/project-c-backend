@@ -33,9 +33,7 @@ class AttendanceController extends Controller
             ->get();
 
         //api call
-        return response()->json([
-            'attendances' => $attendances,
-        ]);
+        return response()->json($attendances);
 
         // web call
         // return view('employee.attendance-schedule', [
@@ -110,7 +108,8 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    public function copy() {
+    public function copy()
+    {
         $next_week = Carbon::now()->addWeek()->week;
         $second_week = Carbon::now()->addWeeks(2)->week;
         $current_year = Carbon::now()->year;
