@@ -40,11 +40,17 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
+        if(Carbon::now()->formatLocalized('%A') == "Sunday") {
+            $next_week = Carbon::now()->addWeek()->week - 1;
+        } else {
+            $next_week = Carbon::now()->addWeek()->week;
+        }
+
         foreach ($employees as $employee) {
             for ($i=0; $i < 7; $i++) {
                 Attendance::create([
                     'employee_id' => $employee->id,
-                    'week_number' => Carbon::now()->addWeek()->week,
+                    'week_number' => $next_week,
                     'week_day' => $i + 1,
                     'year' => Carbon::now()->year,
                     'onSite' => false
