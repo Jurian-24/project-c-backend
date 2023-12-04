@@ -12,5 +12,8 @@
     <a href="{{ route('add-employee') }}">
         Add a new Employee
     </a>
+    <a href="{{ route('get-products') }}">
+        Products of AH
+    </a>
 </body>
 </html>

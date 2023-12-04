@@ -4,8 +4,9 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\AttendanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,9 @@ Route::middleware(['companyAdmin'])->group(function () {
     })->name('company-admin-dashboard');
     Route::get('/add-employee', [EmployeeController::class, 'add'])->name('add-employee');
     Route::post('/add-employee', [EmployeeController::class, 'create'])->name('add-employee');
+    Route::get('/products', [ProductController::class, 'index'])->name('get-products');
+    Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
+    Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
 });
 
 Route::middleware(['employeeCheck'])->group(function () {

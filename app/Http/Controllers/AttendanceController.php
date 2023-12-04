@@ -35,10 +35,11 @@ class AttendanceController extends Controller
         //api call
         return response()->json($attendances);
 
+        // dd($next_week);
         // web call
-        // return view('employee.attendance-schedule', [
-        //     'attendances' => $attendances,
-        // ]);
+        return view('employee.attendance-schedule', [
+            'attendances' => $attendances,
+        ]);
     }
 
     /**

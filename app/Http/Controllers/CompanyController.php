@@ -134,46 +134,46 @@ class CompanyController extends Controller
         $company = Company::findOrFail($id);
 
         // web call
-        // $request->validate([
-        //     'company_name' => 'required',
-        //     'company_adress' => 'required',
-        //     'company_country' => 'required',
-        //     'company_city' => 'required',
-        //     'company_zip' => 'required'
-        // ]);
-
-        // $company->update([
-        //     'name' => $request->company_name,
-        //     'adress' => $request->company_adress,
-        //     'country' => $request->company_country,
-        //     'city' => $request->company_city,
-        //     'zip_code' => $request->company_zip,
-        //     'verified' => true,
-        //     'verification_token' => null,
-        // ]);
-
-        // api call
         $request->validate([
-            'name' => 'required',
-            'adress' => 'required',
-            'country' => 'required',
-            'city' => 'required',
-            'zip_code' => 'required',
+            'company_name' => 'required',
+            'company_adress' => 'required',
+            'company_country' => 'required',
+            'company_city' => 'required',
+            'company_zip' => 'required'
         ]);
 
         $company->update([
-            'name' => $request->name,
-            'adress' => $request->adress,
-            'country' => $request->country,
-            'city' => $request->city,
-            'zip_code' => $request->zip_code,
+            'name' => $request->company_name,
+            'adress' => $request->company_adress,
+            'country' => $request->company_country,
+            'city' => $request->company_city,
+            'zip_code' => $request->company_zip,
             'verified' => true,
             'verification_token' => null,
         ]);
 
-        return response()->json([
-            'message' => 'Company updated successfully',
-        ], 200);
+        // // api call
+        // $request->validate([
+        //     'name' => 'required',
+        //     'adress' => 'required',
+        //     'country' => 'required',
+        //     'city' => 'required',
+        //     'zip_code' => 'required',
+        // ]);
+
+        // $company->update([
+        //     'name' => $request->name,
+        //     'adress' => $request->adress,
+        //     'country' => $request->country,
+        //     'city' => $request->city,
+        //     'zip_code' => $request->zip_code,
+        //     'verified' => true,
+        //     'verification_token' => null,
+        // ]);
+
+        // return response()->json([
+        //     'message' => 'Company updated successfully',
+        // ], 200);
 
         return redirect('/')->with('success', 'You have completed the validation process, you can now login with your temporary password given by the Buurtboer Admin');
     }
