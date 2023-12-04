@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('managers', function (Blueprint $table) {
             $table->id();
             $table->uuid('user_id');
-            $table->uuid('compant_id');
+            $table->uuid('company_id');
             $table->integer('start_date'); // unix timestamp
             $table->timestamps();
         });

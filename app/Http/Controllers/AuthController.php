@@ -18,7 +18,14 @@ class AuthController extends Controller
             $token = $request->user()->createToken('access_token')->plainTextToken;
 
             // turn this on if using web
-            return redirect('/home')->withCookie(cookie('access_token', $token, 60));
+            if(auth()->user()->role === 'super_admin') {
+                return redirect('home')->withCookie(cookie('access_token', $token, 60));
+            }
+            if(auth()->user()->role === 'company_admin') {
+                return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
+            }
+
+            return redirect('employee-home')->withCookie(cookie('access_token', $token, 60));
 
             // turn this on if using api
             // return response()->json([
@@ -28,7 +35,6 @@ class AuthController extends Controller
             // ], 200)->header('Authorization', $token);
         }
 
-        // create a access token for the user if the credentials are valid
         return response()->json([
             'message' => 'Invalid credentials',
 
@@ -36,6 +42,10 @@ class AuthController extends Controller
     }
 
     public function logout() {
+        if(!auth()->user()) {
+            return redirect('/');
+        }
+
         auth()->user()->tokens()->delete();
 
         auth()->logout();

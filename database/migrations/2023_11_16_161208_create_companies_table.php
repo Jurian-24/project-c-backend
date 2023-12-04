@@ -14,11 +14,13 @@ return new class extends Migration {
             $table->id();
             $table->uuid('manager_id');
             $table->string('name');
-            $table->string('adress');
-            $table->string('country');
-            $table->string('city');
-            $table->string('zip_code');
-            $table->string('building');
+            $table->string('adress')->nullable();
+            $table->string('country')->nullable();
+            $table->string('city')->nullable();
+            $table->string('zip_code')->nullable();
+            $table->string('building')->nullable();
+            $table->boolean('verified')->default(false);
+            $table->string('verification_token')->nullable();
             $table->timestamps();
         });
     }
