@@ -12,7 +12,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::all();
+
+        return view('company-admin.products')->with('products', $products);
     }
 
     /**
@@ -34,9 +36,36 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show($title)
     {
-        //
+        $products = Product::where('title', 'LIKE', '%' . $title . '%')
+            ->orWhere('brand', 'LIKE', '%' . $title . '%')
+            ->where('order_availability_status', "IN_ASSORTMENT")
+            ->with('productImages')
+            ->get();
+
+        $productMatches = [];
+
+        foreach ($products as $product) {
+            $implodedTitle = explode(' ', strtolower($product->title));
+
+            if(in_array($title, $implodedTitle)) {
+                $product->productImages()->where('width', 708)->get();
+                array_push($productMatches, $product);
+            }
+
+        }
+
+        return view('company-admin.products')->with('products', $productMatches);
+    }
+
+    public function searchCategorie($categorie)
+    {
+        $products = Product::where('main_category', 'LIKE', '%' . $categorie . '%')
+            ->with('productImages')
+            ->get();
+
+        return view('company-admin.products')->with('products', $products);
     }
 
     /**
