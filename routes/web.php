@@ -44,8 +44,8 @@ Route::middleware(['companyAdmin'])->group(function () {
     Route::get('/add-employee', [EmployeeController::class, 'add'])->name('add-employee');
     Route::post('/add-employee', [EmployeeController::class, 'create'])->name('add-employee');
     Route::get('/products', [ProductController::class, 'index'])->name('get-products');
-    Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
-    Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
+    // Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
+    // Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
 });
 
 Route::middleware(['employeeCheck'])->group(function () {

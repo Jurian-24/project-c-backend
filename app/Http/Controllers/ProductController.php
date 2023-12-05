@@ -55,8 +55,11 @@ class ProductController extends Controller
             }
 
         }
+        // web call
+        // return view('company-admin.products')->with('products', $productMatches);
 
-        return view('company-admin.products')->with('products', $productMatches);
+        // api call
+        return response()->json($productMatches, 200);
     }
 
     public function searchCategorie($categorie)
