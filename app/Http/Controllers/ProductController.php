@@ -41,25 +41,32 @@ class ProductController extends Controller
         $products = Product::where('title', 'LIKE', '%' . $title . '%')
             ->orWhere('brand', 'LIKE', '%' . $title . '%')
             ->where('order_availability_status', "IN_ASSORTMENT")
-            ->with('productImages')
+            ->with(['productImages' => function ($query) {
+                $query->where('width', 800);
+            }])
             ->get();
 
         $productMatches = [];
 
         foreach ($products as $product) {
+            if($product->productImages->count() > 0) {
+                $product->product_image = $product->productImages[0]->url;
+                unset($product->product_images);
+            }
+
             $implodedTitle = explode(' ', strtolower($product->title));
 
             if(in_array($title, $implodedTitle)) {
-                $product->productImages()->where('width', 708)->get();
                 array_push($productMatches, $product);
             }
 
         }
+
         // web call
         // return view('company-admin.products')->with('products', $productMatches);
 
         // api call
-        return response()->json($productMatches, 200);
+        return response()->json($products, 200);
     }
 
     public function searchCategorie($categorie)
