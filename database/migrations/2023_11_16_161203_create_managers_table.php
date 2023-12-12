@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->uuid('user_id');
             $table->uuid('company_id');
             $table->integer('start_date'); // unix timestamp
+            $table->boolean('has_active_basket')->default(false);
             $table->timestamps();
         });
     }

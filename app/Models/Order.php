@@ -22,7 +22,7 @@ class Order extends Model
         return $this->belongsTo(Company::class);
     }
 
-    public function orderItems()
+    public function orderLines()
     {
         return $this->hasMany(OrderLine::class);
     }

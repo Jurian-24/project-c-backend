@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -18,21 +19,21 @@ class AuthController extends Controller
             $token = $request->user()->createToken('access_token')->plainTextToken;
 
             // turn this on if using web
-            if(auth()->user()->role === 'super_admin') {
-                return redirect('home')->withCookie(cookie('access_token', $token, 60));
-            }
-            if(auth()->user()->role === 'company_admin') {
-                return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
-            }
+            // if(auth()->user()->role === 'super_admin') {
+            //     return redirect('home')->withCookie(cookie('access_token', $token, 60));
+            // }
+            // if(auth()->user()->role === 'company_admin') {
+            //     return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
+            // }
 
-            return redirect('employee-home')->withCookie(cookie('access_token', $token, 60));
-
+            // return redirect('employee-home')->withCookie(cookie('access_token', $token, 60));
+            $user = User::where('id', auth()->user()->id)->with('employee.company')->first();
             // turn this on if using api
-            // return response()->json([
-            //     'message' => 'Successfully logged in',
-            //     'access_token' => $token,
-            //     'user' => auth()->user()
-            // ], 200)->header('Authorization', $token);
+            return response()->json([
+                'message' => 'Successfully logged in',
+                'token' => $token,
+                'user' => $user
+            ], 200)->header('Authorization', $token);
         }
 
         return response()->json([
@@ -41,7 +42,8 @@ class AuthController extends Controller
         ], 401);
     }
 
-    public function logout() {
+    public function logout()
+    {
         if(!auth()->user()) {
             return redirect('/');
         }

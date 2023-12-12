@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
             $employees[] = \App\Models\Employee::create([
                 'user_id' => $user->id,
                 'company_id' => $company->id,
-                'joined_at' => Carbon::now()->timestamp,
+                'joined_at' => Carbon::now(),
             ]);
         }
 
@@ -53,7 +53,7 @@ class DatabaseSeeder extends Seeder
                     'week_number' => $next_week,
                     'week_day' => $i + 1,
                     'year' => Carbon::now()->year,
-                    'onSite' => false
+                    'on_site' => false
                 ]);
             }
         }

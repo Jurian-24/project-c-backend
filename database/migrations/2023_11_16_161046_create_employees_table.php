@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->uuid('user_id');
             $table->uuid('company_id');
-            $table->integer('joined_at'); // unix timestamp
+            $table->date('joined_at'); // unix timestamp
             $table->timestamps();
         });
     }

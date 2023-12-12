@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
@@ -22,7 +23,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// authentication routes
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    // authentication routes
+
+});
 
 // company routes
 Route::get('/get-companies', [CompanyController::class, 'index']);
@@ -41,8 +48,6 @@ Route::post('/delete-employee/{employeeId}', [EmployeeController::class, 'destro
 
 Route::get('/get-attendance/{employeeId}', [AttendanceController::class, 'index']);
 Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update']);
-
 Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
 Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
-
 // Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update'])->name('update-attendance');
