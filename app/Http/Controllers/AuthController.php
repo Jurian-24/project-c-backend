@@ -27,7 +27,10 @@ class AuthController extends Controller
             // }
 
             // return redirect('employee-home')->withCookie(cookie('access_token', $token, 60));
-            $user = User::where('id', auth()->user()->id)->with('employee.company')->first();
+            $user = User::where('id', auth()->user()->id)->with('employee')
+            ->with('basket', function ($query) {
+                $query->where('status', 'active')->first();
+            })->first();
             // turn this on if using api
             return response()->json([
                 'message' => 'Successfully logged in',

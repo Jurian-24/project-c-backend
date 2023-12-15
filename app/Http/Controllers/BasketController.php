@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Basket;
+use App\Models\BasketItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
@@ -18,9 +21,51 @@ class BasketController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'user_id' => 'required',
+            'product_id' => 'required'
+        ]);
+
+        $product = Product::findOrFail($request->product_id);
+        $user = User::find($request->user_id);
+
+        if($user->has_active_basket) {
+            $user_basket = $user->basket()->where('status', 'active')->first();
+
+            (new BasketItemController())->create($user_basket, $product);
+
+            $basketItems = BasketItem::where('basket_id', $user_basket->id)
+                ->with('product')
+                ->get();
+
+            $totalPrice = 0;
+
+            foreach($basketItems as $item) {
+                $totalPrice += ($item->quantity * (float)$item->product->price);
+            }
+
+            $user_basket->total_price = $totalPrice;
+
+            $user_basket->save();
+
+            return response()->json($user_basket, 200);
+        }
+
+        $basket = Basket::create([
+            'user_id' => $request->user_id,
+            'status' => 'active',
+            'total_price' => $product->price,
+        ]);
+
+        $user->has_active_basket = true;
+
+        $user->save();
+
+        (new BasketItemController)->create($basket, $product);
+
+        return $basket;
     }
 
     /**

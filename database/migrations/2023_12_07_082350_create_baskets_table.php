@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->foreign('id')->on('users');
             $table->enum('status', ['active', 'inactive'])->default('active');
-            $table->integer('total_price')->default(0);
+            $table->decimal('total_price')->default(0.00);
             $table->timestamps();
         });
     }
