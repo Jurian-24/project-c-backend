@@ -30,6 +30,24 @@ class DatabaseSeeder extends Seeder
             'verification_token' => null
         ]);
 
+        // create super admin
+        $superAdmin = \App\Models\User::create([
+            'first_name' => 'Super',
+            'middle_name' => null,
+            'last_name' => 'Admin',
+            'role' => 'super_admin',
+            'password' => '$2y$12$5CeAFIio/UpcRhHUGyOTwun5P1zc5qCybOw7SIvv2kMDOSr6u8HVS', // password123
+            'email' => 'admin@buurtboer.nl',
+            'remember_token' => \Illuminate\Support\Str::random(10),
+        ]);
+
+        // create super admin employee
+        \App\Models\Employee::create([
+            'user_id' => $superAdmin->id,
+            'company_id' => $company->id,
+            'joined_at' => Carbon::now(),
+        ]);
+
         $employees = [];
 
         foreach($users as $user) {
@@ -58,16 +76,6 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // create super admin
-        \App\Models\User::create([
-            'first_name' => 'Super',
-            'middle_name' => null,
-            'last_name' => 'Admin',
-            'role' => 'super_admin',
-            'password' => '$2y$12$5CeAFIio/UpcRhHUGyOTwun5P1zc5qCybOw7SIvv2kMDOSr6u8HVS', // password123
-            'email' => 'admin@buurtboer.nl',
-            'remember_token' => \Illuminate\Support\Str::random(10),
-        ]);
 
 
 

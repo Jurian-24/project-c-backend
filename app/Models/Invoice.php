@@ -12,6 +12,7 @@ class Invoice extends Model
 
     protected $fillable=[
         'order_id',
+        'user_id',
         'company_id',
         'total_price',
         'status',
