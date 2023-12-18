@@ -79,9 +79,14 @@ class BasketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Basket $basket)
+    public function show(Request $request)
     {
-        //
+        $basket = Basket::where('user_id', $request->user_id)
+            ->where('status', 'active')
+            ->with('basketItems.product.productImages')
+            ->first();
+
+        return $basket;
     }
 
     /**
