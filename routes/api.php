@@ -58,4 +58,7 @@ Route::post('/create-basket', [BasketController::class, 'create'])->name('add-to
 Route::get('/get-basket', [BasketController::class, 'show'])->name('get-basket');
 Route::post('/update-basket-item', [BasketItemController::class, 'update'])->name('update-basket-item');
 Route::post('/delete-basket-item', [BasketItemController::class, 'destroy'])->name('delete-basket-item');
+
+// checkout routes
+Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');
 // Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update'])->name('update-attendance');
