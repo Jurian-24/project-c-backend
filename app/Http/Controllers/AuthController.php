@@ -19,12 +19,12 @@ class AuthController extends Controller
             $token = $request->user()->createToken('access_token')->plainTextToken;
 
             // turn this on if using web
-            // if(auth()->user()->role === 'super_admin') {
-            //     return redirect('home')->withCookie(cookie('access_token', $token, 60));
-            // }
-            // if(auth()->user()->role === 'company_admin') {
-            //     return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
-            // }
+            if(auth()->user()->role === 'super_admin') {
+                return redirect('home')->withCookie(cookie('access_token', $token, 60));
+            }
+            if(auth()->user()->role === 'company_admin') {
+                return redirect('company-admin-dashboard')->withCookie(cookie('access_token', $token, 60));
+            }
 
             // return redirect('employee-home')->withCookie(cookie('access_token', $token, 60));
             $user = User::where('id', auth()->user()->id)->with('employee')
