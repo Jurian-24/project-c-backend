@@ -61,6 +61,8 @@ class ProductController extends Controller
             }
 
         }
+        // web call
+        // return view('company-admin.products')->with('products', $productMatches);
 
         // web call
         // return view('company-admin.products')->with('products', $productMatches);
