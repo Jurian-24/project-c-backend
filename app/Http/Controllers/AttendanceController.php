@@ -53,7 +53,7 @@ class AttendanceController extends Controller
                 'week_number' => Carbon::now()->addWeek()->week,
                 'week_day' => $i + 1,
                 'year' => Carbon::now()->year,
-                'onSite' => false
+                'on_site' => false
             ]);
         }
 
@@ -101,7 +101,7 @@ class AttendanceController extends Controller
             ->first();
 
         $attendance->update([
-            'onSite' => !$attendance->onSite,
+            'on_site' => !$attendance->on_site,
         ]);
 
         return response()->json([
@@ -126,7 +126,7 @@ class AttendanceController extends Controller
                 'week_number' => $second_week,
                 'week_day' => $attendance->week_day,
                 'year' => $current_year,
-                'onSite' => $attendance->onSite,
+                'on_site' => $attendance->on_site,
             ]);
         }
 

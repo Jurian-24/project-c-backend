@@ -16,7 +16,8 @@ return new class extends Migration {
             $table->integer('week_number');
             $table->integer('week_day');
             $table->integer('year');
-            $table->boolean('onSite');
+            $table->boolean('on_site');
+            $table->boolean('verified')->default(false);
             $table->timestamps();
         });
     }

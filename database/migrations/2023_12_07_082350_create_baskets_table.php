@@ -4,18 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('managers', function (Blueprint $table) {
+        Schema::create('baskets', function (Blueprint $table) {
             $table->id();
-            $table->uuid('user_id');
-            $table->uuid('company_id');
-            $table->integer('start_date'); // unix timestamp
-            $table->boolean('has_active_basket')->default(false);
+            $table->unsignedBigInteger('user_id')->foreign('id')->on('users');
+            $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->decimal('total_price')->default(0.00);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('managers');
+        Schema::dropIfExists('baskets');
     }
 };
