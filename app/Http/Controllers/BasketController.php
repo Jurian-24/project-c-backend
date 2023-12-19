@@ -88,6 +88,14 @@ class BasketController extends Controller
             ->with('basketItems.product')
             ->first();
 
+        $totalPrice = 0;
+
+        foreach($basket->basketItems as $item) {
+            $totalPrice += ($item->quantity * $item->product->price);
+        }
+
+        $totalPrice = number_format($totalPrice, 2);
+
         $invoice = Invoice::create([
             'user_id' => $user->id,
             'order_id' => null,
@@ -96,7 +104,7 @@ class BasketController extends Controller
         $order = Order::create([
             'basket_id' => $basket->id,
             'invoice_id' => $invoice->id,
-            'total_price' => $basket->total_price,
+            'total_price' => $totalPrice,
             'status' => 'pending',
             'payment_method' => 'IDEAL',
             'payment_status' => 'pending',
