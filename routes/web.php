@@ -25,7 +25,7 @@ use App\Http\Controllers\AttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('login-page');
 
 
 Route::post('/login', [AuthController::class, 'login'])->name('authenticate-user');

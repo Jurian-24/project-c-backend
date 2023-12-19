@@ -14,7 +14,7 @@ class Attendance extends Model
         'week_number',
         'week_day',
         'year',
-        'onSite',
+        'on_site',
     ];
 
     public function employee()

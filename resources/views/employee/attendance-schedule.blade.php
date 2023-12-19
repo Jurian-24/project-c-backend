@@ -30,7 +30,7 @@
 
             <label for="{{ $attendance->week_day }}">{{ $dayName }}</label>
             <input type="checkbox" name="{{ $attendance->week_day }}"
-                @if($attendance->onSite)
+                @if($attendance->on_site)
                     checked
                 @endif
             >
