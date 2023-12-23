@@ -51,20 +51,18 @@ class BasketController extends Controller
             }
 
             $user_basket->total_price = $totalPrice;
-
             $user_basket->save();
 
             return response()->json($user_basket, 200);
         }
 
         $basket = Basket::create([
-            'user_id' => $request->user_id,
-            'status' => 'active',
+            'user_id'     => $request->user_id,
+            'status'      => 'active',
             'total_price' => $product->price,
         ]);
 
         $user->has_active_basket = true;
-
         $user->save();
 
         (new BasketItemController)->create($basket, $product);
@@ -97,44 +95,43 @@ class BasketController extends Controller
         $totalPrice = number_format($totalPrice, 2);
 
         $invoice = Invoice::create([
-            'user_id' => $user->id,
+            'user_id'  => $user->id,
             'order_id' => null,
         ]);
 
         $order = Order::create([
-            'basket_id' => $basket->id,
-            'invoice_id' => $invoice->id,
-            'total_price' => $totalPrice,
-            'status' => 'pending',
-            'payment_method' => 'IDEAL',
-            'payment_status' => 'pending',
-            'company_id' => $user->employee->company->id,
+            'basket_id'        => $basket->id,
+            'invoice_id'       => $invoice->id,
+            'total_price'      => $totalPrice,
+            'status'           => 'pending',
+            'payment_method'   => 'IDEAL',
+            'payment_status'   => 'pending',
+            'company_id'       => $user->employee->company->id,
             'delivery_service' => 'Albert Heijn',
         ]);
 
         $invoice->order_id = $order->id;
-
         $invoice->save();
 
         foreach($basket->basketItems as $item) {
             $orderLine = OrderLine::create([
-                'order_id' => $order->id,
-                'quantity' => $item->quantity,
-                'price' => $item->product->price,
+                'order_id'   => $order->id,
+                'quantity'   => $item->quantity,
+                'price'      => $item->product->price,
                 'product_id' => $item->product->id,
-                'price' => round($item->quantity * $item->product->price, 2),
+                'price'      => round($item->quantity * $item->product->price, 2),
             ]);
         }
 
         $payment = Mollie::api()->payments->create([
             "amount" => [
                 "currency" => "EUR",
-                "value" => $order->total_price,
+                "value"    => $order->total_price,
             ],
             "description" => "Buurtboer Bestelling: {$order->id}",
             "redirectUrl" => 'https://raccyfolio.web.app/#',
-            "method" => "ideal",
-            "metadata" => [
+            "method"      => "ideal",
+            "metadata"    => [
                 "order_id" => "{$order->id}",
             ],
         ]);
@@ -143,7 +140,7 @@ class BasketController extends Controller
 
         return response()->json([
             'payment' => $payment->getCheckoutUrl(),
-            'order' => $order,
+            'order'   => $order,
         ], 200);
     }
 
