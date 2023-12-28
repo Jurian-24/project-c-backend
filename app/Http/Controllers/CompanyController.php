@@ -59,13 +59,13 @@ class CompanyController extends Controller
         Employee::create([
             'user_id' => $manager->id,
             'company_id' => $company->id,
-            'joined_at' => now()->timestamp,
+            'joined_at' => now(),
         ]);
 
         Manager::create([
             'user_id' => $manager->id,
             'company_id' => $company->id,
-            'start_date' => now()->timestamp,
+            'start_date' => now(),
         ]);
 
         Mail::to($manager)
