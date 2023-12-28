@@ -18,7 +18,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all()->with('employee');
+        $companies = Company::all();
 
         //api call
         return response()->json([
