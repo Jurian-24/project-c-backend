@@ -37,33 +37,33 @@ class CompanyController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'company_name' => 'required',
+            'company_name'       => 'required',
             'manager_first_name' => 'required',
-            'manager_password' => 'required',
-            'manager_email' => 'required|email|unique:users,email',
+            'manager_password'   => 'required',
+            'manager_email'      => 'required|email|unique:users,email',
         ]);
 
         $manager = User::create([
             'first_name' => $request->manager_first_name,
-            'email' => $request->manager_email,
-            'password' => $request->manager_password,
-            'role' => 'company_admin'
+            'email'      => $request->manager_email,
+            'password'   => $request->manager_password,
+            'role'       => 'company_admin'
         ]);
 
         $company = Company::create([
-            'manager_id' => $manager->id,
-            'name' => $request->company_name,
+            'manager_id'         => $manager->id,
+            'name'               => $request->company_name,
             'verification_token' => Str::Random(32),
         ]);
 
         Employee::create([
-            'user_id' => $manager->id,
+            'user_id'    => $manager->id,
             'company_id' => $company->id,
             'joined_at' => now(),
         ]);
 
         Manager::create([
-            'user_id' => $manager->id,
+            'user_id'    => $manager->id,
             'company_id' => $company->id,
             'start_date' => now(),
         ]);
@@ -135,20 +135,20 @@ class CompanyController extends Controller
 
         // web call
         $request->validate([
-            'company_name' => 'required',
-            'company_adress' => 'required',
+            'company_name'    => 'required',
+            'company_adress'  => 'required',
             'company_country' => 'required',
-            'company_city' => 'required',
-            'company_zip' => 'required'
+            'company_city'    => 'required',
+            'company_zip'     => 'required'
         ]);
 
         $company->update([
-            'name' => $request->company_name,
-            'adress' => $request->company_adress,
-            'country' => $request->company_country,
-            'city' => $request->company_city,
-            'zip_code' => $request->company_zip,
-            'verified' => true,
+            'name'               => $request->company_name,
+            'adress'             => $request->company_adress,
+            'country'            => $request->company_country,
+            'city'               => $request->company_city,
+            'zip_code'           => $request->company_zip,
+            'verified'           => true,
             'verification_token' => null,
         ]);
 
@@ -184,14 +184,9 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::findOrFail($id);
-
         $company->delete();
 
         if(!$company->exists) {
-            // web response
-            // return redirect('company-overview')->with('success', 'Company deleted successfully');
-
-            // api response
             return response()->json([
                 'message' => 'Company deleted successfully',
             ], 200);
