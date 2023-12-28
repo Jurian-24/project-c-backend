@@ -65,7 +65,7 @@ class CompanyController extends Controller
         Manager::create([
             'user_id'    => $manager->id,
             'company_id' => $company->id,
-            'start_date' => now(),
+            'start_date' => now()->timestamp,
         ]);
 
         Mail::to($manager)
