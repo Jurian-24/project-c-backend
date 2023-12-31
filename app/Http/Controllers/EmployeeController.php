@@ -25,6 +25,18 @@ class EmployeeController extends Controller
         ]);
     }
 
+    /*
+    * Get all employees of a company
+    */
+    public function getEmployees($companyId)
+    {
+        $employees = Employee::where('company_id', $companyId)->with('user')->get();
+
+        return response()->json([
+            'employees' => $employees
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */

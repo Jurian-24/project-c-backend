@@ -41,6 +41,7 @@ Route::post('/update-company/{id}', [CompanyController::class, 'update']);
 Route::post('/delete-company/{company}', [CompanyController::class, 'destroy']);
 
 // employee routes
+Route::get('/{companyId}/get-employees', [EmployeeController::class, `GetEmployees(${companyId})`]);
 Route::get('/get-employees', [EmployeeController::class, 'index']);
 Route::get('/get-employee/{id}', [EmployeeController::class, 'show']);
 Route::post('/create-employee', [EmployeeController::class, 'create']);
