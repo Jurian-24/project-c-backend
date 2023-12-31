@@ -87,7 +87,7 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::findOrFail($id);
+        $company = Company::findOrFail($id)->with('employee.user')->first();
 
         // return json response
         return $company->toJson(JSON_PRETTY_PRINT);
