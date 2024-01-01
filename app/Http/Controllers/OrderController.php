@@ -10,9 +10,29 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $request->validate([
+            'company_id' => 'required|integer',
+        ]);
+
+        $ordersLastWeek = Order::where('company_id', $request->company_id)
+            ->where('created_at', '>=', now()->subWeek())
+            // ->where('status', 'paid')
+            ->get();
+
+        $orderDays = [];
+
+        foreach ($ordersLastWeek as $order) {
+            array_push($orderDays, [
+                'day' => $order->created_at->format('l'),
+                'total_price' => $order->total_price,
+            ]);
+        }
+
+        return response()->json([
+            'orderDays' => $orderDays,
+        ]);
     }
 
     /**
