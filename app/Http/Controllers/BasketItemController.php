@@ -20,23 +20,20 @@ class BasketItemController extends Controller
         }
 
         BasketItem::create([
-            'basket_id' => $basket->id,
+            'basket_id'  => $basket->id,
             'product_id' => $product->id,
-            'quantity' => 1,
+            'quantity'   => 1,
         ]);
     }
 
     public function update(Request $request) {
 
         $request->validate([
-            'user_id' => 'required',
-            'basket_id' => 'required',
+            'user_id'        => 'required',
+            'basket_id'      => 'required',
             'basket_item_id' => 'required',
-            'quantity' => 'required',
+            'quantity'       => 'required',
         ]);
-
-
-
 
         $basket = Basket::find($request->basket_id)
             ->where('user_id', $request->user_id)
@@ -63,8 +60,8 @@ class BasketItemController extends Controller
 
     public function destroy(Request $request) {
         $request->validate([
-            'user_id' => 'required',
-            'basket_id' => 'required',
+            'user_id'        => 'required',
+            'basket_id'      => 'required',
             'basket_item_id' => 'required',
         ]);
 

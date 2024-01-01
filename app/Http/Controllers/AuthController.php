@@ -31,17 +31,17 @@ class AuthController extends Controller
             ->with('basket', function ($query) {
                 $query->where('status', 'active')->first();
             })->first();
+
             // turn this on if using api
             return response()->json([
                 'message' => 'Successfully logged in',
-                'token' => $token,
-                'user' => $user
+                'token'   => $token,
+                'user'    => $user
             ], 200)->header('Authorization', $token);
         }
 
         return response()->json([
-            'message' => 'Invalid credentials',
-
+            'message' => 'Invalid credentials.',
         ], 401);
     }
 
@@ -52,11 +52,8 @@ class AuthController extends Controller
         }
 
         auth()->user()->tokens()->delete();
-
         auth()->logout();
 
         return redirect('/');
     }
-
-    // lbraun@example.com
 }

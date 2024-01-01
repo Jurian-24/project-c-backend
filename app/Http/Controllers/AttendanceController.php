@@ -15,7 +15,7 @@ class AttendanceController extends Controller
      */
     public function index($employeeId = null)
     {
-        if (!$employeeId) {
+        if(!$employeeId) {
             $employeeId = auth()->user()->employee->id;
         }
 
@@ -23,7 +23,7 @@ class AttendanceController extends Controller
 
         // week starts at sunday, prevents that it returns the wrong week for the upcoming week
         // Example: week 47 sunday == week 49 accourding to the next week. This prevents that.
-        if(Carbon::now()->formatLocalized('%A') == "Sunday") {
+        if(Carbon::now()->formatLocalized('%A') == 'Sunday') {
             $next_week--;
         }
 
@@ -129,15 +129,15 @@ class AttendanceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($employee_id)
+    public function create($employee_id): void
     {
-        for ($i=0; $i < 7; $i++) {
+        for($i=0; $i < 7; $i++) {
             Attendance::create([
                 'employee_id' => $employee_id,
                 'week_number' => Carbon::now()->addWeek()->week,
-                'week_day' => $i + 1,
-                'year' => Carbon::now()->year,
-                'on_site' => false
+                'week_day'    => $i + 1,
+                'year'        => Carbon::now()->year,
+                'on_site'     => false
             ]);
         }
 
@@ -147,7 +147,7 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -155,7 +155,7 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Attendance $attendence)
+    public function show(Attendance $attendence): void
     {
         //
     }
@@ -163,7 +163,7 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attendance $attendence)
+    public function edit(Attendance $attendence): void
     {
         //
     }
@@ -175,7 +175,8 @@ class AttendanceController extends Controller
     {
         if($request->employeeId) {
             $employeeId = $request->employeeId;
-        } else {
+        }
+        else {
             $employeeId = auth()->user()->employee->id;
         }
 
@@ -189,7 +190,7 @@ class AttendanceController extends Controller
         ]);
 
         return response()->json([
-            'success' => 'Attendance updated😎'
+            'success' => 'Attendance updated.'
         ], 200);
     }
 
@@ -204,13 +205,13 @@ class AttendanceController extends Controller
             ->where('employee_id', auth()->user()->employee->id)
             ->get();
 
-        foreach ($current_attendances as $attendance) {
+        foreach($current_attendances as $attendance) {
             Attendance::create([
                 'employee_id' => $attendance->employee_id,
                 'week_number' => $second_week,
-                'week_day' => $attendance->week_day,
-                'year' => $current_year,
-                'on_site' => $attendance->on_site,
+                'week_day'    => $attendance->week_day,
+                'year'        => $current_year,
+                'on_site'     => $attendance->on_site,
             ]);
         }
 
@@ -220,7 +221,7 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Attendance $attendence)
+    public function destroy(Attendance $attendence): void
     {
         //
     }

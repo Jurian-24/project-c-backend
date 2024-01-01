@@ -67,4 +67,8 @@ Route::post('/orders', [OrderController::class, 'index'])->name('get-orders');
 
 // checkout routes
 Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');
+
+Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
+Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
+
 // Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update'])->name('update-attendance');
