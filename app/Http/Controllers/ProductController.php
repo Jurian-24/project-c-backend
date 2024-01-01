@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
+use function in_array;
+use function array_push;
+
 class ProductController extends Controller
 {
     /**
@@ -48,9 +51,10 @@ class ProductController extends Controller
 
         $productMatches = [];
 
-        foreach ($products as $product) {
+        foreach($products as $product) {
             if($product->productImages->count() > 0) {
                 $product->product_image = $product->productImages[0]->url;
+
                 unset($product->product_images);
             }
 
@@ -62,10 +66,6 @@ class ProductController extends Controller
 
         }
 
-        // web call
-        // return view('company-admin.products')->with('products', $productMatches);
-
-        // api call
         return response()->json($products, 200);
     }
 

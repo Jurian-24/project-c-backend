@@ -23,11 +23,6 @@ class EmployeeController extends Controller
         return response()->json([
             'employees' => $employees
         ]);
-
-        // turn on when you are testing in laravel
-        // return view('company-admin.employee-overview', [
-        //     'employees' => $employees
-        // ]);
     }
 
     /**
@@ -37,38 +32,34 @@ class EmployeeController extends Controller
     {
         if($request->company_manager_id == null) {
             $company_admin = Employee::where('user_id', auth()->user()->id)->with('company')->first();
-        } else {
+        }
+        else {
             $company_admin = Employee::where('user_id', $request->company_manager_id)->with('company')->first();
         }
 
         $request->validate([
-            'email' => 'required|unique:users',
+            'email'    => 'required|unique:users',
             'password' => 'required'
         ]);
 
 
         $user = User::create([
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'role' => 'employee',
+            'email'              => $request->email,
+            'password'           => bcrypt($request->password),
+            'role'               => 'employee',
             'verification_token' => Str::Random(32),
         ]);
 
         $employee = Employee::create([
-            'user_id' => $user->id,
+            'user_id'    => $user->id,
             'company_id' => $company_admin->company->id,
-            'joined_at' => now()->timestamp,
+            'joined_at'  => now()->timestamp,
         ]);
 
         (new AttendanceController())->create($employee->id);
 
         Mail::to($user->email)->send(new EmployeeRegistration($user, $request->password));
 
-
-        //web call
-        // return redirect()->route('add-employee')->with('success', 'Employee added successfully');
-
-        //api call
         return response()->json([
             'message' => 'Employee added successfully'
         ]);
@@ -94,15 +85,9 @@ class EmployeeController extends Controller
     {
         $employee = Employee::find($id)->with('company', 'user')->first();
 
-        //api call
         return response()->json([
             'employee' => $employee
         ]);
-
-        // turn on when you are testing in laravel
-        // return view('company-admin.employee-overview', [
-        //     'employee' => $employee
-        // ]);
     }
 
     /**
@@ -119,10 +104,10 @@ class EmployeeController extends Controller
     public function update(Request $request, $token, $userId = null)
     {
         $request->validate([
-            'first_name' => 'required',
+            'first_name'  => 'required',
             'middle_name' => 'required',
-            'last_name' => 'required',
-            'password' => 'required'
+            'last_name'   => 'required',
+            'password'    => 'required'
         ]);
 
         if($userId === null) {
@@ -134,7 +119,8 @@ class EmployeeController extends Controller
                 ->where('email', $request->email)
                 ->first();
 
-        } else {
+        }
+        else {
             $user = User::find($userId)->where('verification_token', $token)->first();
         }
 
@@ -145,40 +131,30 @@ class EmployeeController extends Controller
 
         if($user->verified) {
             if(auth()->attempt(['email' => $user->email, 'password' => $user->password])) {
-                //api call
-                return response()->json(['success' => 'Registration completed successfullt'], 200);
-
-                //web call
-                // return redirect()->route('employee-home')->with('success', 'Registration completed successfully');
+                return response()->json([
+                    'success' => 'Registration completed successfullt'
+                ], 200);
             }
 
             //api call
-            return response()->json(['error' => 'It seems you have already verified'], 400);
+            return response()->json([
+                'error' => 'It seems you have already verified'
+            ], 400);
         }
 
         $user->update([
-            'first_name' => $request->first_name,
-            'middle_name' => $request->middle_name,
-            'last_name' => $request->last_name,
-            'password' => bcrypt($request->password),
-            'verified' => true,
+            'first_name'         => $request->first_name,
+            'middle_name'        => $request->middle_name,
+            'last_name'          => $request->last_name,
+            'password'           => bcrypt($request->password),
+            'verified'           => true,
             'verification_token' => null,
         ]);
 
-        //web call
-        // if(auth()->attempt(['email' => $user->email, 'password' => $request->password])) {
-        //     return redirect()->route('employee-home')->with('success', 'Registration completed successfully');
-        // }
-
-        // api call
         return response()->json([
             'message' => 'Registration completed successfully'
         ]);
 
-        // web call
-        // return redirect()->back()->with('error', 'Something went wrong');
-
-        // api call
         return response()->json([
             'message' => 'Something went wrong'
         ]);
@@ -188,10 +164,14 @@ class EmployeeController extends Controller
         $user = User::where('verification_token', $verificationToken)->first();
 
         if($user === null) {
-            return response()->json(['error' => 'User already verified'], 400);
+            return response()->json([
+                'error' => 'User already verified'
+            ], 400);
         }
 
-        return view('employee.registration', ['user' => $user]);
+        return view('employee.registration', [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -202,15 +182,21 @@ class EmployeeController extends Controller
         $employee = Employee::find($employeeId);
 
         if($employee === null) {
-            return response()->json(['error' => 'Employee not found'], 404);
+            return response()->json([
+                'error' => 'Employee not found'
+            ], 404);
         }
 
         $employee->delete();
 
         if(!$employee->exists) {
-            return response()->json(['success' => 'Employee deleted successfully'], 200);
+            return response()->json([
+                'success' => 'Employee deleted successfully'
+            ], 200);
         }
 
-        return response()->json(['error' => 'Something went wrong'], 400);
+        return response()->json([
+            'error' => 'Something went wrong'
+        ], 400);
     }
 }
