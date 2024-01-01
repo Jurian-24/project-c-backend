@@ -53,6 +53,8 @@ Route::get('/get-attendance/{employeeId}', [AttendanceController::class, 'index'
 Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update']);
 Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
 Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
+Route::post('/total-attendance', [AttendanceController::class, 'getCompanyAttendance'])->name('total-attendance');
+Route::post('/weekly-attendance', [AttendanceController::class, 'getWeeklyAttendance'])->name('weekly-attendance');
 
 // basket routes
 Route::post('/create-basket', [BasketController::class, 'create'])->name('add-to-basket');

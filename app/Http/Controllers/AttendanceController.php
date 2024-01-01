@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
 
 class AttendanceController extends Controller
 {
@@ -40,6 +42,88 @@ class AttendanceController extends Controller
         return view('employee.attendance-schedule', [
             'attendances' => $attendances,
         ]);
+    }
+
+    public function getCompanyAttendance(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'required|integer',
+        ]);
+
+        $lastYearRecords = Attendance::whereYear('created_at', now()->subYear())->get();
+
+        $currentYearRecords = Attendance::whereYear('created_at', now()->year())->get();
+
+        $lastYearQuarters = [
+            'Q1' => 0,
+            'Q2' => 0,
+            'Q3' => 0,
+            'Q4' => 0,
+        ];
+
+        $currentYearQuarters = [
+            'Q1' => 0,
+            'Q2' => 0,
+            'Q3' => 0,
+            'Q4' => 0,
+        ];
+
+        foreach ($lastYearRecords as $record) {
+            if ($record->created_at->month <= 3) {
+                $lastYearQuarters['Q1']++;
+            } elseif ($record->created_at->month <= 6) {
+                $lastYearQuarters['Q2']++;
+            } elseif ($record->created_at->month <= 9) {
+                $lastYearQuarters['Q3']++;
+            } elseif ($record->created_at->month <= 12) {
+                $lastYearQuarters['Q4']++;
+            }
+        }
+
+        foreach ($currentYearRecords as $record) {
+            if ($record->created_at->month <= 3) {
+                $currentYearQuarters['Q1']++;
+            } elseif ($record->created_at->month <= 6) {
+                $currentYearQuarters['Q2']++;
+            } elseif ($record->created_at->month <= 9) {
+                $currentYearQuarters['Q3']++;
+            } elseif ($record->created_at->month <= 12) {
+                $currentYearQuarters['Q4']++;
+            }
+        }
+
+        return response()->json([
+            'lastYearAttendance' => [
+                'year' => (string)now()->subYear()->year,
+                'quarters' => $lastYearQuarters,
+            ],
+            'currentYearAttendance' => [
+                'year' => (string)now()->year,
+                'quarters' => $currentYearQuarters,
+            ],
+        ]);
+    }
+
+    public function getWeeklyAttendance(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'required|integer',
+        ]);
+
+        $currentWeekRecords = Attendance::whereRaw('WEEK(created_at) = WEEK(NOW())')
+            ->where('on_site', true)
+            ->groupBy('week_day')
+            ->get(['week_day', DB::raw('COUNT(*) as count')]);
+
+        $currentWeekDays = [
+            'Monday' => $currentWeekRecords[0],
+            'Tuesday' => $currentWeekRecords[1],
+            'Wednesday' => $currentWeekRecords[2],
+            'Thursday' => $currentWeekRecords[3],
+            'Friday' => $currentWeekRecords[4],
+        ];
+
+        return response()->json($currentWeekDays);
     }
 
     /**
