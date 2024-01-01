@@ -18,11 +18,11 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::all();
+        $companies = Company::with('employee')->get();
 
         //api call
         return response()->json([
-            'companies' => $companies
+            'companies' => $companies,
         ]);
 
         // turn on when you are testing in laravel
@@ -87,7 +87,8 @@ class CompanyController extends Controller
      */
     public function show($id)
     {
-        $company = Company::findOrFail($id);
+        // $company = Company::findOrFail($id)->with('employee.user')->first();
+        $company = Company::where('id', $id)->with('employee.user')->first();
 
         // return json response
         return $company->toJson(JSON_PRETTY_PRINT);
