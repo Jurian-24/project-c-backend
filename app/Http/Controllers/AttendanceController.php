@@ -44,6 +44,33 @@ class AttendanceController extends Controller
         ]);
     }
 
+    public function getYearlyEmployeeAttendance(Request $request) {
+        $request->validate([
+            'employee_id' => 'required',
+        ]);
+
+        // get the attendances of the employee and group them by daynumber
+        $attendances = Attendance::whereRaw('WEEK(created_at) = WEEK(NOW())')
+            ->where('on_site', true)
+            ->groupBy('week_day')
+            ->get(['week_day', DB::raw('COUNT(*) as count')]);
+
+        $currentWeekDays = [
+            'Monday' => $attendances[0]->count,
+            'Tuesday' => $attendances[1]->count,
+            'Wednesday' => $attendances[2]->count,
+            'Thursday' => $attendances[3]->count,
+            'Friday' => $attendances[4]->count,
+        ];
+
+
+        // $attendances = Attendance::where('employee_id', $request->employee_id)
+        //     ->where('year', Carbon::now()->year)
+        //     ->get();
+
+        return response()->json($currentWeekDays);
+    }
+
     public function getCompanyAttendance(Request $request)
     {
         $request->validate([

@@ -55,6 +55,7 @@ Route::get('/products/{title}', [ProductController::class, 'show'])->name('searc
 Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
 Route::post('/total-attendance', [AttendanceController::class, 'getCompanyAttendance'])->name('total-attendance');
 Route::post('/weekly-attendance', [AttendanceController::class, 'getWeeklyAttendance'])->name('weekly-attendance');
+Route::post('/employee-attendance', [AttendanceController::class, 'getYearlyEmployeeAttendance'])->name('employee-attendance');
 
 // basket routes
 Route::post('/create-basket', [BasketController::class, 'create'])->name('add-to-basket');

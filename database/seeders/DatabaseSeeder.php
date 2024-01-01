@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+
         // create employees
         $users = \App\Models\User::factory(100)->create();
 
@@ -48,15 +49,15 @@ class DatabaseSeeder extends Seeder
         //     'joined_at' => Carbon::now(),
         // ]);
 
-        $employees = [];
+        // $employees = [];
 
-        foreach($users as $user) {
-            $employees[] = \App\Models\Employee::create([
-                'user_id' => $user->id,
-                'company_id' => $company->id,
-                'joined_at' => Carbon::now(),
-            ]);
-        }
+        // foreach($users as $user) {
+        //     $employees[] = \App\Models\Employee::create([
+        //         'user_id' => $user->id,
+        //         'company_id' => $company->id,
+        //         'joined_at' => Carbon::now(),
+        //     ]);
+        // }
 
         if(Carbon::now()->formatLocalized('%A') == "Sunday") {
             $next_week = Carbon::now()->addWeek()->week - 1;
@@ -64,21 +65,30 @@ class DatabaseSeeder extends Seeder
             $next_week = Carbon::now()->addWeek()->week;
         }
 
-        foreach ($employees as $employee) {
-            for ($i=0; $i < 7; $i++) {
+        // foreach ($employees as $employee) {
+        //     for ($i=0; $i < 7; $i++) {
+        //         Attendance::create([
+        //             'employee_id' => $employee->id,
+        //             'week_number' => $next_week,
+        //             'week_day' => $i + 1,
+        //             'year' => Carbon::now()->year,
+        //             'on_site' => rand(1,2) == 1,
+        //         ]);
+        //     }
+        // }
+
+        for ($i=1; $i < 53; $i++) {
+            for ($j=0; $j < 7; $j++) {
                 Attendance::create([
-                    'employee_id' => $employee->id,
-                    'week_number' => $next_week,
-                    'week_day' => $i + 1,
+                    'employee_id' => 1,
+                    'week_number' => $i,
+                    'week_day' => $j + 1,
                     'year' => Carbon::now()->year,
-                    'on_site' => rand(1,2) == 1,
+                    'on_site' => rand(1, 2) == 1,
                 ]);
             }
+
         }
-
-
-
-
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
