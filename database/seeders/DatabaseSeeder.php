@@ -17,19 +17,19 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        // create employees
-        $users = \App\Models\User::factory(100)->create();
+        // // create employees
+        // $users = \App\Models\User::factory(100)->create();
 
-        $company = \App\Models\Company::create([
-            'manager_id' => 1,
-            'name' => 'Buurtboer',
-            'adress' => 'Kerkstraat 1',
-            'city' => 'Amsterdam',
-            'zip_code' => '1011',
-            'country' => 'Nederland',
-            'verified' => true,
-            'verification_token' => null
-        ]);
+        // $company = \App\Models\Company::create([
+        //     'manager_id' => 1,
+        //     'name' => 'Buurtboer',
+        //     'adress' => 'Kerkstraat 1',
+        //     'city' => 'Amsterdam',
+        //     'zip_code' => '1011',
+        //     'country' => 'Nederland',
+        //     'verified' => true,
+        //     'verification_token' => null
+        // ]);
 
         // // create super admin
         // $superAdmin = \App\Models\User::create([
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         //     'remember_token' => \Illuminate\Support\Str::random(10),
         // ]);
 
-        // create super admin employee
+        // // create super admin employee
         // \App\Models\Employee::create([
         //     'user_id' => $superAdmin->id,
         //     'company_id' => $company->id,
@@ -59,11 +59,11 @@ class DatabaseSeeder extends Seeder
         //     ]);
         // }
 
-        if(Carbon::now()->formatLocalized('%A') == "Sunday") {
-            $next_week = Carbon::now()->addWeek()->week - 1;
-        } else {
-            $next_week = Carbon::now()->addWeek()->week;
-        }
+        // if(Carbon::now()->formatLocalized('%A') == "Sunday") {
+        //     $next_week = Carbon::now()->addWeek()->week - 1;
+        // } else {
+        //     $next_week = Carbon::now()->addWeek()->week;
+        // }
 
         // foreach ($employees as $employee) {
         //     for ($i=0; $i < 7; $i++) {
@@ -87,7 +87,6 @@ class DatabaseSeeder extends Seeder
                     'on_site' => rand(1, 2) == 1,
                 ]);
             }
-
         }
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',

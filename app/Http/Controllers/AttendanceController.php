@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class AttendanceController extends Controller
 {
@@ -55,13 +56,20 @@ class AttendanceController extends Controller
             ->groupBy('week_day')
             ->get(['week_day', DB::raw('COUNT(*) as count')]);
 
-        $currentWeekDays = [
-            'Monday' => $attendances[0]->count,
-            'Tuesday' => $attendances[1]->count,
-            'Wednesday' => $attendances[2]->count,
-            'Thursday' => $attendances[3]->count,
-            'Friday' => $attendances[4]->count,
-        ];
+        try {
+            $currentWeekDays = [
+                'Monday' => $attendances[0]->count,
+                'Tuesday' => $attendances[1]->count,
+                'Wednesday' => $attendances[2]->count,
+                'Thursday' => $attendances[3]->count,
+                'Friday' => $attendances[4]->count,
+            ];
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'No attendance found for this employee.'
+            ], 404);
+        }
+
 
 
         // $attendances = Attendance::where('employee_id', $request->employee_id)
