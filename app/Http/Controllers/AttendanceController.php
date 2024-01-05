@@ -148,6 +148,8 @@ class AttendanceController extends Controller
             'Wednesday' => $currentWeekRecords[2],
             'Thursday' => $currentWeekRecords[3],
             'Friday' => $currentWeekRecords[4],
+            'Saturday' => $currentWeekRecords[5],
+            'Sunday' => $currentWeekRecords[6],
         ];
 
         return response()->json($currentWeekDays);
