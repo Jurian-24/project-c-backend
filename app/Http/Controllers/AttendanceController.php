@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
+use PhpParser\Node\Stmt\TryCatch;
 
 class AttendanceController extends Controller
 {
@@ -40,6 +43,124 @@ class AttendanceController extends Controller
         return view('employee.attendance-schedule', [
             'attendances' => $attendances,
         ]);
+    }
+
+    public function getYearlyEmployeeAttendance(Request $request) {
+        $request->validate([
+            'employee_id' => 'required',
+        ]);
+
+        // get the attendances of the employee and group them by daynumber
+        $attendances = Attendance::whereRaw('WEEK(created_at) = WEEK(NOW())')
+            ->where('on_site', true)
+            ->groupBy('week_day')
+            ->get(['week_day', DB::raw('COUNT(*) as count')]);
+
+        try {
+            $currentWeekDays = [
+                'Monday' => $attendances[0]->count,
+                'Tuesday' => $attendances[1]->count,
+                'Wednesday' => $attendances[2]->count,
+                'Thursday' => $attendances[3]->count,
+                'Friday' => $attendances[4]->count,
+            ];
+        } catch (\Throwable $th) {
+            return response()->json([
+                'error' => 'No attendance found for this employee.'
+            ], 404);
+        }
+
+
+
+        // $attendances = Attendance::where('employee_id', $request->employee_id)
+        //     ->where('year', Carbon::now()->year)
+        //     ->get();
+
+        return response()->json($currentWeekDays);
+    }
+
+    public function getCompanyAttendance(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'required|integer',
+        ]);
+
+        $lastYearRecords = Attendance::whereYear('created_at', now()->subYear())->get();
+
+        $currentYearRecords = Attendance::whereYear('created_at', now()->year())->get();
+
+        $lastYearQuarters = [
+            'Q1' => 0,
+            'Q2' => 0,
+            'Q3' => 0,
+            'Q4' => 0,
+        ];
+
+        $currentYearQuarters = [
+            'Q1' => 0,
+            'Q2' => 0,
+            'Q3' => 0,
+            'Q4' => 0,
+        ];
+
+        foreach ($lastYearRecords as $record) {
+            if ($record->created_at->month <= 3) {
+                $lastYearQuarters['Q1']++;
+            } elseif ($record->created_at->month <= 6) {
+                $lastYearQuarters['Q2']++;
+            } elseif ($record->created_at->month <= 9) {
+                $lastYearQuarters['Q3']++;
+            } elseif ($record->created_at->month <= 12) {
+                $lastYearQuarters['Q4']++;
+            }
+        }
+
+        foreach ($currentYearRecords as $record) {
+            if ($record->created_at->month <= 3) {
+                $currentYearQuarters['Q1']++;
+            } elseif ($record->created_at->month <= 6) {
+                $currentYearQuarters['Q2']++;
+            } elseif ($record->created_at->month <= 9) {
+                $currentYearQuarters['Q3']++;
+            } elseif ($record->created_at->month <= 12) {
+                $currentYearQuarters['Q4']++;
+            }
+        }
+
+        return response()->json([
+            'lastYearAttendance' => [
+                'year' => (string)now()->subYear()->year,
+                'quarters' => $lastYearQuarters,
+            ],
+            'currentYearAttendance' => [
+                'year' => (string)now()->year,
+                'quarters' => $currentYearQuarters,
+            ],
+        ]);
+    }
+
+    public function getWeeklyAttendance(Request $request)
+    {
+        $request->validate([
+            'company_id' => 'required|integer',
+        ]);
+
+        $currentWeekRecords = Attendance::whereRaw('WEEK(created_at) = WEEK(NOW())')
+            ->where('on_site', true)
+            ->groupBy('week_day')
+            ->get(['week_day', DB::raw('COUNT(*) as count')]);
+
+        $currentWeekDays = [
+            'Monday' => $currentWeekRecords[0],
+            'Tuesday' => $currentWeekRecords[1],
+            'Wednesday' => $currentWeekRecords[2],
+            'Thursday' => $currentWeekRecords[3],
+            'Friday' => $currentWeekRecords[4],
+            'Saturday' => $currentWeekRecords[5],
+            'Sunday' => $currentWeekRecords[6],
+        ];
+
+        return response()->json($currentWeekDays);
     }
 
     /**

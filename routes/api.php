@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BasketItemController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,12 +53,18 @@ Route::get('/get-attendance/{employeeId}', [AttendanceController::class, 'index'
 Route::post('/update-attendance/{weekNumber}/{weekDay}', [AttendanceController::class, 'update']);
 Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
 Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
+Route::post('/total-attendance', [AttendanceController::class, 'getCompanyAttendance'])->name('total-attendance');
+Route::post('/weekly-attendance', [AttendanceController::class, 'getWeeklyAttendance'])->name('weekly-attendance');
+Route::post('/employee-attendance', [AttendanceController::class, 'getYearlyEmployeeAttendance'])->name('employee-attendance');
 
 // basket routes
 Route::post('/create-basket', [BasketController::class, 'create'])->name('add-to-basket');
 Route::get('/get-basket', [BasketController::class, 'show'])->name('get-basket');
 Route::post('/update-basket-item', [BasketItemController::class, 'update'])->name('update-basket-item');
 Route::post('/delete-basket-item', [BasketItemController::class, 'destroy'])->name('delete-basket-item');
+
+// order routes
+Route::post('/orders', [OrderController::class, 'index'])->name('get-orders');
 
 // checkout routes
 Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');
