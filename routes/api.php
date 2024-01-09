@@ -47,8 +47,8 @@ Route::get('/get-employee/{id}', [EmployeeController::class, 'show']);
 Route::post('/create-employee', [EmployeeController::class, 'create']);
 
 // User routes
-Route::get('/get-employees', [UserController::class, 'index']);
-Route::get('/get-employee/{id}', [UserController::class, 'show']);
+Route::get('/get-users', [UserController::class, 'index']);
+Route::get('/get-user/{id}', [UserController::class, 'show']);
 
 // Route::post('/update-employee/{id}', [EmployeeController::class, 'update']);
 Route::post('/complete-registration/{token}', [EmployeeController::class, 'update']);
