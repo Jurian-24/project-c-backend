@@ -45,6 +45,11 @@ Route::post('/delete-company/{company}', [CompanyController::class, 'destroy']);
 Route::get('/get-employees', [EmployeeController::class, 'index']);
 Route::get('/get-employee/{id}', [EmployeeController::class, 'show']);
 Route::post('/create-employee', [EmployeeController::class, 'create']);
+
+// User routes
+Route::get('/get-employees', [UserController::class, 'index']);
+Route::get('/get-employee/{id}', [UserController::class, 'show']);
+
 // Route::post('/update-employee/{id}', [EmployeeController::class, 'update']);
 Route::post('/complete-registration/{token}', [EmployeeController::class, 'update']);
 Route::post('/delete-employee/{employeeId}', [EmployeeController::class, 'destroy']);
