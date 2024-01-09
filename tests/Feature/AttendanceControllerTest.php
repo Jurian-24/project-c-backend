@@ -47,7 +47,7 @@ class AttendanceControllerTest extends TestCase
         // dd(Attendance::where('employee_id', 4)->get());
 
         // assert that the http response is successful
-        $response->assertStatus(404);
+        $response->assertStatus(200);
     }
 
     /**
@@ -64,6 +64,6 @@ class AttendanceControllerTest extends TestCase
         $response = $this->post('/copy-attendance');
 
         // assert that the response is a redirect
-        $response->assertStatus(405);
+        $response->assertStatus(302);
     }
 }
