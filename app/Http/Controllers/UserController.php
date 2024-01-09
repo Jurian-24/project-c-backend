@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Employee;
 
+use Illuminate\Http\Request;
+
 class UserController extends Controller
 {
     /**
@@ -32,4 +34,3 @@ class UserController extends Controller
         ]);
     }
 }
-?>
