@@ -181,6 +181,14 @@ class EmployeeController extends Controller
     {
         $employee = Employee::find($employeeId);
 
+        $user = User::find($employee->user_id);
+
+        $attendances = Attendance::where('employee_id', $employeeId);
+
+        if($attendances->exists()) {
+            $attendances->delete();
+        }
+
         if($employee === null) {
             return response()->json([
                 'error' => 'Employee not found'
@@ -188,6 +196,7 @@ class EmployeeController extends Controller
         }
 
         $employee->delete();
+        $user->delete();
 
         if(!$employee->exists) {
             return response()->json([
