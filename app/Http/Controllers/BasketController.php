@@ -129,11 +129,15 @@ class BasketController extends Controller
                 "value"    => $order->total_price,
             ],
             "description" => "Buurtboer Bestelling: {$order->id}",
-            "redirectUrl" => 'https://buurtboer-79d6b.web.app/search-products',
+            "redirectUrl" => env("APP_URL") . "/api/finish-payment",
             "method"      => "ideal",
             "metadata"    => [
                 "order_id" => "{$order->id}",
             ],
+        ]);
+
+        Mollie::api()->payments->update($payment->id, [
+            "redirectUrl" => "http://localhost:8000/api/finish-payment/{$payment->id}",
         ]);
 
         // return redirect($payment->getCheckoutUrl(), 303);
@@ -143,23 +147,6 @@ class BasketController extends Controller
             'order'   => $order,
         ], 200);
     }
-
-    // public function checkout() {
-    //     $payment = Mollie::api()->payments->create([
-    //         "amount" => [
-    //             "currency" => "EUR",
-    //             "value" => "10.00"
-    //         ],
-    //         "description" => "Order #12345",
-    //         "redirectUrl" => 'https://raccyfolio.web.app/#',
-    //         "method" => "ideal",
-    //         "metadata" => [
-    //             "order_id" => "12345",
-    //         ],
-    //     ]);
-
-    //     return redirect($payment->getCheckoutUrl(), 303);
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -180,6 +167,32 @@ class BasketController extends Controller
             ->first();
 
         return $basket;
+    }
+
+    public function finishPayment($id) {
+        // return Mollie::api()->payments->get('tr_'. $id);
+        $payment = Mollie::api()->payments->get($id);
+
+        $order = Order::find($payment->metadata->order_id);
+
+        if($payment->isPaid()) {
+            $order->payment_status = 'PAID';
+            $order->status = 'PROCESSING';
+            $order->save();
+
+            $basket = Basket::find($order->basket_id);
+            $basket->status = 'inactive';
+            $basket->save();
+
+            $invoice = Invoice::find($order->invoice_id);
+            $user = User::find($invoice->user_id);
+            $user->has_active_basket = false;
+            $user->save();
+
+            return redirect(env('FRONTEND_URL').'/search-products?message=success');
+        }
+
+        return redirect(env('FRONTEND_URL').'/search-products?message=failed');
     }
 
     /**

@@ -75,6 +75,7 @@ Route::get('/get-order', [OrderController::class, 'show'])->name('get-order');
 
 // checkout routes
 Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');
+Route::get('/finish-payment/{paymentId}', [BasketController::class, 'finishPayment'])->name('finish-payment');
 
 Route::get('/products/{title}', [ProductController::class, 'show'])->name('search-product');
 Route::get('/products/categorie/{categorie}', [ProductController::class, 'searchCategorie'])->name('search-categorie');
