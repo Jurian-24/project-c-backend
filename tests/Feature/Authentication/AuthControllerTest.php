@@ -4,6 +4,7 @@ namespace Tests\Feature\Authentication;
 
 use Tests\TestCase;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -47,5 +48,15 @@ class AuthControllerTest extends TestCase
 
         // Additional assertions if needed based on your application logic
         // For example, you may want to check the presence of specific data in the response.
+    }
+
+    public function test_password_encryption()
+    {
+        $password = 'password';
+        $user = User::factory()->create([
+            'password' => bcrypt($password),
+        ]);
+
+        $this->assertTrue(Hash::check($password, $user->password));
     }
 }
