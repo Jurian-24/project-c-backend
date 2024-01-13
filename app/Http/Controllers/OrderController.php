@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -54,9 +55,17 @@ class OrderController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Order $order)
+    public function show(Request $request)
     {
-        //
+        $request->validate([
+            'token' => 'required|string',
+        ]);
+
+        $user = User::with('basket')->where('id', $request->token)->first();
+        $basket = $user->basket->where('status', 'active')->first();
+        $order = Order::where('basket_id', $basket->id)->first();
+
+        return response()->json($order);
     }
 
     /**

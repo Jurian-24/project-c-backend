@@ -8,6 +8,7 @@ use App\Models\Attendance;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Database\Seeders\AppieProductSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -92,5 +93,6 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
     }
 }

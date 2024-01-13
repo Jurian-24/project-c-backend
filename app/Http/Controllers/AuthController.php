@@ -40,6 +40,8 @@ class AuthController extends Controller
             ], 200)->header('Authorization', $token);
         }
 
+        dd($request->all());
+
         return response()->json([
             'message' => 'Invalid credentials.',
         ], 401);

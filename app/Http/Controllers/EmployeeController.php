@@ -30,18 +30,13 @@ class EmployeeController extends Controller
      */
     public function create(Request $request)
     {
-        if($request->company_manager_id == null) {
-            $company_admin = Employee::where('user_id', auth()->user()->id)->with('company')->first();
-        }
-        else {
-            $company_admin = Employee::where('user_id', $request->company_manager_id)->with('company')->first();
-        }
-
         $request->validate([
-            'email'    => 'required|unique:users',
-            'password' => 'required'
+            'email'              => 'required|unique:users',
+            'password'           => 'required',
+            'company_id' => 'required'
         ]);
 
+        $company_admin = Employee::with('company')->where('company_id', $request->company_id)->first();
 
         $user = User::create([
             'email'              => $request->email,
@@ -53,7 +48,7 @@ class EmployeeController extends Controller
         $employee = Employee::create([
             'user_id'    => $user->id,
             'company_id' => $company_admin->company->id,
-            'joined_at'  => now()->timestamp,
+            'joined_at'  => now(),
         ]);
 
         (new AttendanceController())->create($employee->id);

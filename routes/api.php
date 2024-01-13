@@ -71,6 +71,7 @@ Route::post('/delete-basket-item', [BasketItemController::class, 'destroy'])->na
 
 // order routes
 Route::post('/orders', [OrderController::class, 'index'])->name('get-orders');
+Route::get('/get-order', [OrderController::class, 'show'])->name('get-order');
 
 // checkout routes
 Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');

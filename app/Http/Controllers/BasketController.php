@@ -129,7 +129,7 @@ class BasketController extends Controller
                 "value"    => $order->total_price,
             ],
             "description" => "Buurtboer Bestelling: {$order->id}",
-            "redirectUrl" => 'https://raccyfolio.web.app/#',
+            "redirectUrl" => 'https://buurtboer-79d6b.web.app/search-products',
             "method"      => "ideal",
             "metadata"    => [
                 "order_id" => "{$order->id}",
