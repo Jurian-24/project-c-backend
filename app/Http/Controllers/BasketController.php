@@ -189,10 +189,10 @@ class BasketController extends Controller
             $user->has_active_basket = false;
             $user->save();
 
-            return redirect(env('FRONTEND_URL').'/search-products?message=success');
+            return redirect(env('FRONTEND_URL').'/payment-status?status=success');
         }
 
-        return redirect(env('FRONTEND_URL').'/search-products?message=failed');
+        return redirect(env('FRONTEND_URL').'/search-products?status=failed');
     }
 
     /**
