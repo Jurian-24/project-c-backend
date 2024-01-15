@@ -32,3 +32,15 @@ class SuperAdminFeaturesTest extends TestCase
 
         return assertEquals($companyFound, true);
     }
+    
+    public function test_remove_company()
+    {
+        $company = Company::factory()->make();
+
+        $company->delete();
+
+        $companyFound = Company::find($company->id) != null;
+
+        return assertEquals($companyFound, false);
+    }
+}
