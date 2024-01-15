@@ -62,6 +62,7 @@ Route::get('/products/categorie/{categorie}', [ProductController::class, 'search
 Route::post('/total-attendance', [AttendanceController::class, 'getCompanyAttendance'])->name('total-attendance');
 Route::post('/weekly-attendance', [AttendanceController::class, 'getWeeklyAttendance'])->name('weekly-attendance');
 Route::post('/employee-attendance', [AttendanceController::class, 'getYearlyEmployeeAttendance'])->name('employee-attendance');
+Route::post('/copy-schedule/{userId}', [AttendanceController::class, 'copy'])->name('copy-schedule');
 
 // basket routes
 Route::post('/create-basket', [BasketController::class, 'create'])->name('add-to-basket');

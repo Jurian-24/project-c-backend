@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use PhpParser\Node\Stmt\TryCatch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\DB as FacadesDB;
-use PhpParser\Node\Stmt\TryCatch;
 
 class AttendanceController extends Controller
 {
@@ -231,15 +232,23 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    public function copy()
+    public function copy($userId)
     {
+        $user = User::with('employee')->where('id', $userId)->first();
+
+        if(!$user) {
+            return response()->json([
+                'error' => 'User not found.'
+            ], 404);
+        }
+
         $next_week = Carbon::now()->addWeek()->week;
         $second_week = Carbon::now()->addWeeks(2)->week;
         $current_year = Carbon::now()->year;
 
         $current_attendances = Attendance::where('week_number', $next_week)
             ->where('year', $current_year)
-            ->where('employee_id', auth()->user()->employee->id)
+            ->where('employee_id', $user->employee->id)
             ->get();
 
         foreach($current_attendances as $attendance) {
@@ -252,7 +261,9 @@ class AttendanceController extends Controller
             ]);
         }
 
-        return redirect()->route('attendance-schedule')->with('success', 'Your attendance ahs been copied!');
+        return response()->json([
+            'success' => 'Attendance copied.'
+        ], 200);
     }
 
     /**
