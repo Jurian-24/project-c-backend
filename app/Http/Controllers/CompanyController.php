@@ -185,6 +185,18 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         $company = Company::findOrFail($id);
+
+        $employees = Employee::where('company_id', $company->id)->get();
+        $managers = Manager::where('company_id', $company->id)->get();
+
+        foreach ($employees as $employee){
+            $employee->delete();
+        }
+
+        foreach ($managers as $manager){
+            if ($manager->role !== 'super_admin') $manager->delete();
+        }
+
         $company->delete();
 
         if(!$company->exists) {
