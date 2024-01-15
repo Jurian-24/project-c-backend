@@ -192,7 +192,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=success');
         }
 
-        return redirect(env('FRONTEND_URL').'/search-products?status=failed');
+        return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
     }
 
     /**
