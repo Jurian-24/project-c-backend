@@ -42,6 +42,7 @@ Route::post('/create-company', [CompanyController::class, 'create']);
 Route::post('/update-company/{id}', [CompanyController::class, 'update']);
 Route::post('/delete-company/{company}', [CompanyController::class, 'destroy']);
 Route::post('/assign-admin', [CompanyController::class, 'assignAdmin'])->name('assign-admin');
+Route::post('/unassign-admin', [CompanyController::class, 'unassignAdmin'])->name('unassign-admin');
 
 // employee routes
 Route::get('/get-employees', [EmployeeController::class, 'index']);

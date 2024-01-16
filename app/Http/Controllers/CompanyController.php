@@ -239,4 +239,46 @@ class CompanyController extends Controller
             'message' => 'Admin assigned successfully! '. $employee->user->first_name .' is now an admin of the company',
         ], 200);
     }
+
+    public function unassignAdmin(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        $employee = Employee::with('user')->where('user_id', $request->user_id)->first();
+
+        if(!$employee) {
+            return response()->json([
+                'message' => 'Employee not found',
+            ], 404);
+        }
+
+        if($employee->user->role === 'employee') {
+            return response()->json([
+                'message' => 'Employee is not an admin',
+            ], 400);
+        }
+
+        if($employee->user->role === 'super_admin') {
+            return response()->json([
+                'message' => 'Employee is a super admin',
+            ], 400);
+        }
+
+        $company = Company::where('id', $employee->company_id)->first();
+
+        Manager::create([
+            'user_id'    => $request->user_id,
+            'company_id' => $company->id,
+            'start_date' => now()->timestamp,
+        ]);
+
+        $employee->user->update([
+            'role' => 'employee'
+        ]);
+
+        return response()->json([
+            'message' => 'Admin unassigned successfully! '. $employee->user->first_name .' is no longer an admin of the company',
+        ], 200);
+    }
 }
