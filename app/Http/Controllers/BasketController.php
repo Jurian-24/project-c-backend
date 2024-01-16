@@ -192,6 +192,46 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=success');
         }
 
+        if($payment->isOpen()) {
+            $order->payment_status = 'IS_OPEN';
+            $order->status = 'NOT_PAID';
+            $order->save();
+
+            return redirect(env('FRONTEND_URL').'/payment-status?status=open');
+        }
+
+        if($payment->isPending()) {
+            $order->payment_status = 'PENDING';
+            $order->status = 'NOT_PAID';
+            $order->save();
+
+            return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
+        }
+
+        if($payment->isFailed()) {
+            $order->payment_status = 'FAILED';
+            $order->status = 'FAILED';
+            $order->save();
+
+            return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
+        }
+
+        if($payment->isExpired()) {
+            $order->payment_status = 'EXPIRED';
+            $order->status = 'EXPIRED';
+            $order->save();
+
+            return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
+        }
+
+        if($payment->isCanceled()) {
+            $order->payment_status = 'CANCELED';
+            $order->status = 'CANCELED';
+            $order->save();
+
+            return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
+        }
+
         return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
     }
 
