@@ -44,6 +44,26 @@ class OrderController extends Controller
         //
     }
 
+    public function getAdminOrders(Request $request) {
+        $request->validate([
+            'user_id' => 'required',
+        ]);
+
+        $user = User::where('id', $request->user_id)->first();
+        // dd($user->role);
+        if(!$user) {
+            return response('user not found', 404);
+        }
+
+        if(!$user->role == 'super_admin') {
+            return response('unauthorized', 401);
+        }
+
+        $orders = Order::with('company')->get();
+
+        return response()->json($orders);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
