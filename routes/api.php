@@ -41,6 +41,7 @@ Route::get('/get-company/{company}', [CompanyController::class, 'show']);
 Route::post('/create-company', [CompanyController::class, 'create']);
 Route::post('/update-company/{id}', [CompanyController::class, 'update']);
 Route::post('/delete-company/{company}', [CompanyController::class, 'destroy']);
+Route::post('/assign-admin', [CompanyController::class, 'assignAdmin'])->name('assign-admin');
 
 // employee routes
 Route::get('/get-employees', [EmployeeController::class, 'index']);
@@ -73,6 +74,7 @@ Route::post('/delete-basket-item', [BasketItemController::class, 'destroy'])->na
 // order routes
 Route::post('/orders', [OrderController::class, 'index'])->name('get-orders');
 Route::get('/get-order', [OrderController::class, 'show'])->name('get-order');
+Route::post('/get-admin-orders', [OrderController::class, 'getAdminOrders'])->name('get-admin-orders');
 
 // checkout routes
 Route::post('/checkout', [BasketController::class, 'checkout'])->name('checkout');
