@@ -27,6 +27,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        // return user with employee and company
         $user = User::with('employee.company')->find($id);
 
         return response()->json([

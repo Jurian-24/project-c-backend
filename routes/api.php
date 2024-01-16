@@ -43,6 +43,7 @@ Route::post('/update-company/{id}', [CompanyController::class, 'update']);
 Route::post('/delete-company/{company}', [CompanyController::class, 'destroy']);
 Route::post('/assign-admin', [CompanyController::class, 'assignAdmin'])->name('assign-admin');
 Route::post('/unassign-admin', [CompanyController::class, 'unassignAdmin'])->name('unassign-admin');
+Route::post('/get-admins', [CompanyController::class, 'getAdmins'])->name('get-admins');
 
 // employee routes
 Route::get('/get-employees', [EmployeeController::class, 'index']);

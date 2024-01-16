@@ -35,6 +35,7 @@ class BasketController extends Controller
         $product = Product::findOrFail($request->product_id);
         $user = User::find($request->user_id);
 
+        // check if user has active basket
         if($user->has_active_basket) {
             $user_basket = $user->basket()->where('status', 'active')->first();
 
@@ -56,6 +57,7 @@ class BasketController extends Controller
             return response()->json($user_basket, 200);
         }
 
+        // if no basket is found, create one
         $basket = Basket::create([
             'user_id'     => $request->user_id,
             'status'      => 'active',
@@ -65,6 +67,7 @@ class BasketController extends Controller
         $user->has_active_basket = true;
         $user->save();
 
+        // add product to basket
         (new BasketItemController)->create($basket, $product);
 
         return $basket;
@@ -77,10 +80,12 @@ class BasketController extends Controller
 
         // $user = User::find($request->user_id)->with('employee.company')->first();
 
+        // get user with company relation
         $user = User::where('id', $request->user_id)
             ->with('employee.company')
             ->first();
 
+        // get basket with basket items and product relation
         $basket = Basket::where('user_id', $request->user_id)
             ->where('status', 'active')
             ->with('basketItems.product')
@@ -88,12 +93,14 @@ class BasketController extends Controller
 
         $totalPrice = 0;
 
+        // calculate total price of the basket
         foreach($basket->basketItems as $item) {
             $totalPrice += ($item->quantity * $item->product->price);
         }
 
         $totalPrice = number_format($totalPrice, 2);
 
+        // create invoice and order
         $invoice = Invoice::create([
             'user_id'  => $user->id,
             'order_id' => null,
@@ -123,6 +130,7 @@ class BasketController extends Controller
             ]);
         }
 
+        // create payment using the mollie api
         $payment = Mollie::api()->payments->create([
             "amount" => [
                 "currency" => "EUR",
@@ -136,6 +144,7 @@ class BasketController extends Controller
             ],
         ]);
 
+        // update the payment with the redirect url
         Mollie::api()->payments->update($payment->id, [
             "redirectUrl" => "http://localhost:8000/api/finish-payment/{$payment->id}",
         ]);
@@ -161,6 +170,7 @@ class BasketController extends Controller
      */
     public function show(Request $request)
     {
+        // get basket with basket items and product relation
         $basket = Basket::where('user_id', $request->user_id)
             ->where('status', 'active')
             ->with('basketItems.product.productImages')
@@ -171,10 +181,12 @@ class BasketController extends Controller
 
     public function finishPayment($id) {
         // return Mollie::api()->payments->get('tr_'. $id);
+        // get payment by mollie_id
         $payment = Mollie::api()->payments->get($id);
 
         $order = Order::find($payment->metadata->order_id);
 
+        // check if payment is paid if so update order and basket
         if($payment->isPaid()) {
             $order->payment_status = 'PAID';
             $order->status = 'PROCESSING';
@@ -192,6 +204,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=success');
         }
 
+        // check if payment is open if so update order
         if($payment->isOpen()) {
             $order->payment_status = 'IS_OPEN';
             $order->status = 'NOT_PAID';
@@ -200,6 +213,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=open');
         }
 
+        // check if payment is pending if so update order
         if($payment->isPending()) {
             $order->payment_status = 'PENDING';
             $order->status = 'NOT_PAID';
@@ -208,6 +222,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
         }
 
+        // check if payment is failed if so update order
         if($payment->isFailed()) {
             $order->payment_status = 'FAILED';
             $order->status = 'FAILED';
@@ -216,6 +231,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
         }
 
+        // check if payment is expired if so update order
         if($payment->isExpired()) {
             $order->payment_status = 'EXPIRED';
             $order->status = 'EXPIRED';
@@ -224,6 +240,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
         }
 
+        // check if payment is canceled if so update order
         if($payment->isCanceled()) {
             $order->payment_status = 'CANCELED';
             $order->status = 'CANCELED';
@@ -232,6 +249,7 @@ class BasketController extends Controller
             return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
         }
 
+        // if all the above fail it means that the order has failed and can't be updated. Redirect abck to the gulag
         return redirect(env('FRONTEND_URL').'/payment-status?status=failed');
     }
 

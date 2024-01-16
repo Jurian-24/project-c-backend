@@ -13,10 +13,12 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
+        // validate request
         $request->validate([
             'company_id' => 'required|integer',
         ]);
 
+        // get all orders from the last week
         $ordersLastWeek = Order::where('company_id', $request->company_id)
             ->where('created_at', '>=', now()->subWeek())
             // ->where('status', 'paid')
@@ -24,6 +26,7 @@ class OrderController extends Controller
 
         $orderDays = [];
 
+        // loop through the orders and push the day and total price to the array
         foreach ($ordersLastWeek as $order) {
             array_push($orderDays, [
                 'day' => $order->created_at->format('l'),
@@ -45,20 +48,25 @@ class OrderController extends Controller
     }
 
     public function getAdminOrders(Request $request) {
+        // validate request
         $request->validate([
             'user_id' => 'required',
         ]);
 
+        // check if user exists
         $user = User::where('id', $request->user_id)->first();
-        // dd($user->role);
+
+        // check if user is super admin
         if(!$user) {
             return response('user not found', 404);
         }
 
+        // check if user is super admin
         if(!$user->role == 'super_admin') {
             return response('unauthorized', 401);
         }
 
+        // get all orders
         $orders = Order::with('company')->get();
 
         return response()->json($orders);
@@ -77,10 +85,12 @@ class OrderController extends Controller
      */
     public function show(Request $request)
     {
+        // validate request
         $request->validate([
             'token' => 'required|string',
         ]);
 
+        // get the user and basket
         $user = User::with('basket')->where('id', $request->token)->first();
         $basket = $user->basket->where('status', 'active')->first();
         $order = Order::where('basket_id', $basket->id)->first();

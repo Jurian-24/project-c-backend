@@ -53,7 +53,7 @@ class EmployeeController extends Controller
 
         (new AttendanceController())->create($employee->id);
 
-        // Mail::to($user->email)->send(new EmployeeRegistration($user, $request->password));
+        Mail::to($user->email)->send(new EmployeeRegistration($user, $request->password));
 
         return response()->json([
             'message' => 'Employee added successfully'

@@ -36,11 +36,14 @@ class ProductController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
+     /**
+     * @var Product $products
+     *
+     * Description: Get the products that match the title and get the images where the image is 800px wide
      */
     public function show($title)
     {
+
         $products = Product::where('title', 'LIKE', '%' . $title . '%')
             ->orWhere('brand', 'LIKE', '%' . $title . '%')
             ->where('order_availability_status', "IN_ASSORTMENT")
@@ -71,6 +74,7 @@ class ProductController extends Controller
 
     public function searchCategorie($categorie)
     {
+        // search categories
         $products = Product::where('main_category', 'LIKE', '%' . $categorie . '%')
             ->with('productImages')
             ->get();

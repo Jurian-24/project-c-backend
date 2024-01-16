@@ -71,7 +71,7 @@ class CompanyController extends Controller
         Mail::to($manager)
             ->queue(new CompleteCompanyMail($manager, $company));
 
-        return redirect('add-company')->with('success', 'Company added successfully');
+        return response('Company added successfully', 200);
     }
 
     /**
@@ -291,6 +291,21 @@ class CompanyController extends Controller
 
         return response()->json([
             'message' => 'Admin unassigned successfully! '. $employee->user->first_name .' is no longer an admin of the company',
+        ], 200);
+    }
+
+    public function getAdmins(Request $request) {
+        $request->validate([
+            'company_id' => 'required',
+        ]);
+
+        $company = Company::where('id', $request->company_id)->first();
+        $admins = Employee::with(['user', 'company'])
+            ->where('user.role', 'company_admin')
+            ->get();
+
+        return response()->json([
+            'admins' => $admins,
         ], 200);
     }
 }

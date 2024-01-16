@@ -17,6 +17,7 @@ class AttendanceController extends Controller
      */
     public function index($employeeId = null)
     {
+        // if there is no employee passed, get the employee id from the authenticated user (web)
         if(!$employeeId) {
             $employeeId = auth()->user()->employee->id;
         }
@@ -82,6 +83,7 @@ class AttendanceController extends Controller
 
     public function getCompanyAttendance(Request $request)
     {
+        // validation of the request
         $request->validate([
             'company_id' => 'required|integer',
         ]);
@@ -104,6 +106,7 @@ class AttendanceController extends Controller
             'Q4' => 0,
         ];
 
+        // loop through the records and count the attendances per quarter
         foreach ($lastYearRecords as $record) {
             if ($record->created_at->month <= 3) {
                 $lastYearQuarters['Q1']++;
@@ -116,6 +119,7 @@ class AttendanceController extends Controller
             }
         }
 
+        // loop through the records and count the attendances per quarter
         foreach ($currentYearRecords as $record) {
             if ($record->created_at->month <= 3) {
                 $currentYearQuarters['Q1']++;
@@ -151,6 +155,7 @@ class AttendanceController extends Controller
             ->groupBy('week_day')
             ->get(['week_day', DB::raw('COUNT(*) as count')]);
 
+        // get the data of the current week and put it in an array
         $currentWeekDays = [
             'Monday' => $currentWeekRecords[0],
             'Tuesday' => $currentWeekRecords[1],
@@ -211,6 +216,7 @@ class AttendanceController extends Controller
      */
     public function update(Request $request, $weekNumber, $weekDay)
     {
+        // if there is an employee id passed, use that one
         if($request->employeeId) {
             $employeeId = $request->employeeId;
         }
@@ -218,6 +224,7 @@ class AttendanceController extends Controller
             $employeeId = auth()->user()->employee->id;
         }
 
+        // get the attendance of the employee for the given week number and week day
         $attendance = Attendance::where('employee_id', $employeeId)
             ->where('week_number', $weekNumber)
             ->where('week_day', $weekDay)
@@ -242,15 +249,18 @@ class AttendanceController extends Controller
             ], 404);
         }
 
+        // get the week number of the next week and the week number of the week after that
         $next_week = Carbon::now()->addWeek()->week;
         $second_week = Carbon::now()->addWeeks(2)->week;
         $current_year = Carbon::now()->year;
 
+        // week starts at sunday, prevents that it returns the wrong week for the upcoming week
         $current_attendances = Attendance::where('week_number', $next_week)
             ->where('year', $current_year)
             ->where('employee_id', $user->employee->id)
             ->get();
 
+        // loop through the attendances of the next week and create a new attendance for the week after that
         foreach($current_attendances as $attendance) {
             Attendance::create([
                 'employee_id' => $attendance->employee_id,
